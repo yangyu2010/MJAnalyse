@@ -8,6 +8,8 @@ platform :ios, '9.0'
 target 'MJAnalyse_Example' do
   pod 'MJAnalyse', :path => '../'
 
+    pod 'ModuleCapability'
+
     pod 'UMengAnalytics'
     pod 'Firebase/Core'             # Google统计
     pod 'Firebase/Crash'            # Google统计

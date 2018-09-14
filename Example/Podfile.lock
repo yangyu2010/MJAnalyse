@@ -65,7 +65,9 @@ PODS:
   - "GoogleUtilities/NSData+zlib (5.2.3)"
   - GoogleUtilities/Reachability (5.2.3):
     - GoogleUtilities/Logger
-  - MJAnalyse (0.1.0)
+  - MJAnalyse (0.1.0):
+    - ModuleCapability
+  - ModuleCapability (0.1.10)
   - nanopb (0.3.8):
     - nanopb/decode (= 0.3.8)
     - nanopb/encode (= 0.3.8)
@@ -80,9 +82,12 @@ DEPENDENCIES:
   - Firebase/Core
   - Firebase/Crash
   - MJAnalyse (from `../`)
+  - ModuleCapability
   - UMengAnalytics
 
 SPEC REPOS:
+  "git@git.musjoy.com:PodSpecs.git":
+    - ModuleCapability
   https://github.com/cocoapods/specs.git:
     - Adjust
     - Bolts
@@ -115,11 +120,12 @@ SPEC CHECKSUMS:
   GoogleAppMeasurement: fc4a4c3fe0144db9313cbf443ffe62e6b1d6268c
   GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
   GoogleUtilities: 6f681e27050c5e130325e89fa0316dfca826f954
-  MJAnalyse: 8bae8397fa5382cad4889527d602834586fc3620
+  MJAnalyse: eec02e2fc1cc481095e23e93d43eedb10aba886f
+  ModuleCapability: 458b13fd20e195060b9f55451da78294e39da8f0
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
   UMengAnalytics: ef8d45f94c0e5771dc364cf6a5731d9d3b101da2
 
-PODFILE CHECKSUM: a2c546795e12565a7c8f79c2dab03eb4fb53c8e6
+PODFILE CHECKSUM: 051bb8dcd4e21d4d7a0f01ab41c58cb091104a72
 
 COCOAPODS: 1.5.3

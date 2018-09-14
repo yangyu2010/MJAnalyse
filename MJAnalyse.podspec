@@ -17,7 +17,6 @@ Pod::Spec.new do |s|
     s.source           = { :git => 'https://github.com/yangyu2010/MJAnalyse.git', :tag => "v-#{s.version}" }
     s.ios.deployment_target = '9.0'
 
-
     s.source_files = 'MJAnalyse/Classes/**/*'
-
+    s.dependency 'ModuleCapability'
 end
