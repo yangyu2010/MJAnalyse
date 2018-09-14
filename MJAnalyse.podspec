@@ -18,5 +18,9 @@ Pod::Spec.new do |s|
     s.ios.deployment_target = '9.0'
 
     s.source_files = 'MJAnalyse/Classes/**/*'
+    
     s.dependency 'ModuleCapability'
+    s.dependency 'FBSDKCoreKit', '~> 4.36.0'
+    s.dependency 'Adjust', '~> 4.15.0'
+    
 end

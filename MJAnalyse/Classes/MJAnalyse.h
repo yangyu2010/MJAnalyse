@@ -38,7 +38,6 @@
               application:(UIApplication *)application
                   options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options;
 
-
 /**
  Facebook统计, "添加到购物车"
  某个内购有试用时, 才使用该事件记录, 其他内购不使用这个事件
@@ -46,7 +45,7 @@
  @param contentData 一些数据(目前没有规定是什么, 后续看市场需要我们提供哪些数据) 目前传""
  @param contentId 内购的key
  @param contentType 内购类型: "消耗型内购" "自动订阅型内购"等 (可以直接传字符串)
- @param currency 货币 获取内购的(有RMB等) 我们简单处理, 直接获取地区(CN HK US等)给市场
+ @param currency 货币 获取内购的(有RMB, HKD等)
  @param price 价格
  */
 + (void)facebookAddedToCartEvent:(NSString *)contentData
@@ -55,8 +54,6 @@
                         currency:(NSString *)currency
                       valueToSum:(double)price;
 
-
-
 /**
  Facebook统计, "购买"
  该事件记录购买消耗性内购, 没有试用的自动订阅等, 和知道某个试用转成付费后, 用该事件记录
@@ -64,7 +61,7 @@
  @param contentData 一些数据(目前没有规定是什么, 后续看市场需要我们提供哪些数据) 目前传""
  @param contentId 内购的key
  @param contentType 内购类型: "消耗型内购" "自动订阅型内购"等 (可以直接传字符串)
- @param currency 货币 获取内购的(有RMB等) 我们简单处理, 直接获取地区(CN HK US等)给市场
+ @param currency 货币 获取内购的(有RMB, HKD等)
  @param price 价格
  */
 + (void)facebookPurchaseEvent:(NSString *)contentData
@@ -72,6 +69,34 @@
                   contentType:(NSString *)contentType
                      currency:(NSString *)currency
                    valueToSum:(double)price;
+
+
+
+
+#pragma mark- Adjust
+
+/// Adjust 配置
+/// 一定要在Constant.h里配置 AdJustAppToken
++ (void)adjustLaunching;
+
+/**
+ 收入跟踪
+
+ @param amount 收入
+ @param currency 货币
+ @param eventToken 该事件的token, 每个app可能不同
+ */
++ (void)adjustSetRevenue:(double)amount
+                currency:(nonnull NSString *)currency
+              eventToken:(NSString *)eventToken;
+
+
+/**
+ 事件跟踪
+
+ @param eventToken 该事件的token, 每个app可能不同
+ */
++ (void)adjustEventWithEventToken:(NSString *)eventToken;
 
 
 

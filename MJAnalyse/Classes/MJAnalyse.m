@@ -10,6 +10,7 @@
 
 #import <iAd/iAd.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <Adjust/Adjust.h>
 
 /// 存储归因
 #define kLastSearchGroupId  @"kLastSearchGroupId"
@@ -143,6 +144,56 @@
     [FBSDKAppEvents logPurchase:price
                        currency:currency
                      parameters:params];
+}
+
+
+#pragma mark- Adjust
+
+/// Adjust 配置
++ (void)adjustLaunching {
+    
+#ifdef AdJustAppToken
+    
+    NSString *yourAppToken = AdJustAppToken;
+    
+#if defined(DEBUG) || defined(ForTest)
+    ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken environment:ADJEnvironmentSandbox];
+    [adjustConfig setLogLevel:ADJLogLevelVerbose];  // enable all logging
+#else
+    ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken environment:ADJEnvironmentProduction];
+#endif
+    [adjustConfig setSendInBackground:YES];
+    [Adjust appDidLaunch:adjustConfig];
+#else
+    LogInfo(@"‼️‼️‼️‼️❌❌❌❌ 如有使用Adjust, 请在 Constant.h 配置 AdJustAppToken");
+#endif
+
+}
+
+/**
+ 收入跟踪
+ */
++ (void)adjustSetRevenue:(double)amount
+                currency:(nonnull NSString *)currency
+              eventToken:(NSString *)eventToken {
+    
+    if (eventToken.length == 0) {
+        return ;
+    }
+
+    ADJEvent *event = [ADJEvent eventWithEventToken:eventToken];
+    [event setRevenue:amount currency:currency];
+}
+
+
+/**
+ 事件跟踪
+ 
+ @param eventToken 该事件的token, 每个app可能不同
+ */
++ (void)adjustEventWithEventToken:(NSString *)eventToken {
+    ADJEvent *event = [ADJEvent eventWithEventToken:eventToken];
+    [Adjust trackEvent:event];
 }
 
 @end
