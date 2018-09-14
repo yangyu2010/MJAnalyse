@@ -122,6 +122,27 @@
 }
 
 
-
+/**
+ Facebook统计, "购买"
+ 该事件记录购买消耗性内购, 没有试用的自动订阅等, 和知道某个试用转成付费后, 用该事件记录
+ */
++ (void)facebookPurchaseEvent:(NSString *)contentData
+                    contentId:(NSString *)contentId
+                  contentType:(NSString *)contentType
+                     currency:(NSString *)currency
+                   valueToSum:(double)price {
+    
+    NSDictionary *params =
+    @{
+      FBSDKAppEventParameterNameContent : contentData,
+      FBSDKAppEventParameterNameContentID : contentId,
+      FBSDKAppEventParameterNameContentType : contentType,
+      FBSDKAppEventParameterNameCurrency : currency
+      };
+    
+    [FBSDKAppEvents logPurchase:price
+                       currency:currency
+                     parameters:params];
+}
 
 @end

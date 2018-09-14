@@ -57,6 +57,21 @@
 
 
 
+/**
+ Facebook统计, "购买"
+ 该事件记录购买消耗性内购, 没有试用的自动订阅等, 和知道某个试用转成付费后, 用该事件记录
+
+ @param contentData 一些数据(目前没有规定是什么, 后续看市场需要我们提供哪些数据) 目前传""
+ @param contentId 内购的key
+ @param contentType 内购类型: "消耗型内购" "自动订阅型内购"等 (可以直接传字符串)
+ @param currency 货币 获取内购的(有RMB等) 我们简单处理, 直接获取地区(CN HK US等)给市场
+ @param price 价格
+ */
++ (void)facebookPurchaseEvent:(NSString *)contentData
+                    contentId:(NSString *)contentId
+                  contentType:(NSString *)contentType
+                     currency:(NSString *)currency
+                   valueToSum:(double)price;
 
 
 
