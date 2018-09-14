@@ -4,6 +4,24 @@
 //
 //  Created by Yang Yu on 2018/9/14.
 //  统计分析模块
+//  ‼️‼️‼️‼️ 使用注意
+//  1. 在Constant里配置Adjust token(如没有Adjust 则不需要)
+/**
+ /// Adjust App token, 如有使用Adjust, 必须定义
+ #define AdjustAppToken  @"AdjustAppToken"
+ /// 加入购物车token, 如不需要统计, 不定义
+ #define AdjustAddedToCartEvent  @"AdjustAddedToCartEvent"
+ /// 购买token, 如不需要统计, 不定义
+ #define AdjustRevenueEvent  @"AdjustRevenueEvent"
+ */
+
+//  2. 在 didFinishLaunchingWithOptions 中 调用[MJAnalyse configWithApplication:options:]方法
+
+//  3. 如果有内购, 在内购完成后 调用 [MJAnalyse purchaseWithProduct:]
+
+
+
+
 
 #import <Foundation/Foundation.h>
 @class SKProduct;

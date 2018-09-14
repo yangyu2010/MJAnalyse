@@ -8,9 +8,9 @@
 
 
 /// Adjust App token
-#define AdjustAppToken  @"AdJustAppToken"
+#define AdjustAppToken  @"AdjustAppToken"
 /// 加入购物车token
-#define AdjustAddedToCartEvent  @"AdJustAppToken"
+#define AdjustAddedToCartEvent  @"AdjustAddedToCartEvent"
 /// 购买token
-#define AdjustRevenueEvent  @"AdJustAppToken"
+#define AdjustRevenueEvent  @"AdjustRevenueEvent"
 

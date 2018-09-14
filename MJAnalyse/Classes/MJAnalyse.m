@@ -304,9 +304,12 @@
     if (eventToken.length == 0) {
         return ;
     }
-
+    
+#ifdef AdjustRevenueEvent
     ADJEvent *event = [ADJEvent eventWithEventToken:eventToken];
     [event setRevenue:amount currency:currency];
+#endif
+
 }
 
 
