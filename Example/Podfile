@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'MJAnalyse_Example' do
+  pod 'MJAnalyse', :path => '../'
+
+  target 'MJAnalyse_Tests' do
+    inherit! :search_paths
+
+    pod 'FBSnapshotTestCase'
+  end
+end
