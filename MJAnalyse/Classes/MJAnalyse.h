@@ -11,6 +11,7 @@
 @interface MJAnalyse : NSObject
 
 
+
 #pragma mark- Public
 
 /// 初始化统计模块, 包括初始化 iad Facebook adjust三个模块
