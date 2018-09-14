@@ -6,6 +6,7 @@
 //  统计分析模块
 
 #import <Foundation/Foundation.h>
+@class SKProduct;
 
 @interface MJAnalyse : NSObject
 
@@ -26,17 +27,29 @@
 
 #pragma mark- Facebook统计
 
+
 /// 初始化Facebook SDK
 + (void)facebookSDKApplication:(UIApplication *)application options:(NSDictionary *)launchOptions;
 
+
 /// 活跃Facebook SDK(一般不需要调用, SDK会自己调用)
 + (void)facebookActivateApp;
+
 
 /// 处理application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options这个方法时, 调用
 /// if ([url.scheme hasPrefix:@"fb"]) 需提前判断下, 再调用
 + (BOOL)facebookHandleUrl:(NSURL *)url
               application:(UIApplication *)application
                   options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options;
+
+
+/**
+ Facebook统计, 外部购买时调用, 外部不用区分是否是续订型
+ 
+ @param product SKProduct
+ */
++ (void)facebookPurchaseWithProduct:(SKProduct *)product;
+
 
 /**
  Facebook统计, "添加到购物车"
@@ -53,6 +66,7 @@
                      contentType:(NSString *)contentType
                         currency:(NSString *)currency
                       valueToSum:(double)price;
+
 
 /**
  Facebook统计, "购买"

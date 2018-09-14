@@ -6,7 +6,8 @@
 //
 
 #import "MJAnalyse.h"
-#import <ModuleCapability.h>
+#import <ModuleCapability/ModuleCapability.h>
+#import <StoreKit/StoreKit.h>
 
 #import <iAd/iAd.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
@@ -97,6 +98,42 @@
     return handled;
 }
 
+/**
+ Facebook统计, 外部购买时调用, 外部不用区分是否是续订型
+ */
++ (void)facebookPurchaseWithProduct:(SKProduct *)product {
+    
+    double localPrice = 0;
+#ifdef MODULE_IAP_MANAGER
+    localPrice = [[[IAPManager sharedInstance] localePriceForProduct:product] doubleValue]
+#else
+    localPrice = [product.price doubleValue];
+#endif
+    
+    NSString *currency = nil;
+    if (@available(iOS 10.0, *)) {
+        currency = [product.priceLocale currencyCode];
+    } else {
+        currency = [product.priceLocale objectForKey:NSLocaleCurrencyCode];
+    }
+    
+    NSString *productId = product.productIdentifier;
+    
+    /// 如果是试用
+    if ([productId hasSuffix:@"_Trial"]) {
+        [self facebookAddedToCartEvent:@""
+                             contentId:productId
+                           contentType:@""
+                              currency:currency
+                            valueToSum:localPrice];
+    } else {
+        [self facebookPurchaseEvent:@""
+                          contentId:productId
+                        contentType:@""
+                           currency:currency
+                         valueToSum:localPrice];
+    }
+}
 
 
 /**
@@ -108,6 +145,19 @@
                      contentType:(NSString *)contentType
                         currency:(NSString *)currency
                       valueToSum:(double)price {
+    
+    if (contentData == nil) {
+        contentData = @"";
+    }
+    if (contentId == nil) {
+        contentId = @"";
+    }
+    if (contentType == nil) {
+        contentType = @"";
+    }
+    if (currency == nil) {
+        currency = @"";
+    }
     
     NSDictionary *params =
     @{
@@ -132,6 +182,19 @@
                   contentType:(NSString *)contentType
                      currency:(NSString *)currency
                    valueToSum:(double)price {
+    
+    if (contentData == nil) {
+        contentData = @"";
+    }
+    if (contentId == nil) {
+        contentId = @"";
+    }
+    if (contentType == nil) {
+        contentType = @"";
+    }
+    if (currency == nil) {
+        currency = @"";
+    }
     
     NSDictionary *params =
     @{
