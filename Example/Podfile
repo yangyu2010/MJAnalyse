@@ -1,11 +1,17 @@
-use_frameworks!
+source 'git@git.musjoy.com:PodSpecs.git'
+source 'https://github.com/CocoaPods/Specs.git'
+inhibit_all_warnings!
+
+platform :ios, '9.0'
+
 
 target 'MJAnalyse_Example' do
   pod 'MJAnalyse', :path => '../'
 
-  target 'MJAnalyse_Tests' do
-    inherit! :search_paths
+    pod 'UMengAnalytics'
+    pod 'Firebase/Core'             # Google统计
+    pod 'Firebase/Crash'            # Google统计
+    pod 'Adjust'
+    pod 'FBSDKCoreKit'
 
-    pod 'FBSnapshotTestCase'
-  end
 end
