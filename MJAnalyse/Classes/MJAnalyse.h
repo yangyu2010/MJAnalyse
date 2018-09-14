@@ -11,6 +11,17 @@
 @interface MJAnalyse : NSObject
 
 
+#pragma mark- Public
+
+/// 初始化统计模块, 包括初始化 iad Facebook adjust三个模块
++ (void)configWithApplication:(UIApplication *)application
+                      options:(NSDictionary *)launchOptions;;
+
+/// 购买完成后调用, 内部处理统计
++ (void)purchaseWithProduct:(SKProduct *)product;
+
+
+
 #pragma mark- 归因API
 
 /**

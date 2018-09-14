@@ -6,6 +6,11 @@
 //  Copyright (c) 2014年 YouZhun. All rights reserved.
 //
 
-#define AdJustAppToken  @"AdJustAppToken"
 
+/// Adjust App token
+#define AdjustAppToken  @"AdJustAppToken"
+/// 加入购物车token
+#define AdjustAddedToCartEvent  @"AdJustAppToken"
+/// 购买token
+#define AdjustRevenueEvent  @"AdJustAppToken"
 

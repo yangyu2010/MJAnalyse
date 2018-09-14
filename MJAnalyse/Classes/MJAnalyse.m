@@ -13,12 +13,73 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <Adjust/Adjust.h>
 
+#ifdef MODULE_IAP_MANAGER
+#import <MJIAPManager/IAPManager.h>
+#endif
+
 /// 存储归因
 #define kLastSearchGroupId  @"kLastSearchGroupId"
 /// 存储归因广告信息本地key
 #define kSearchAd           @"kSearchAd"
 
 @implementation MJAnalyse
+
+
+#pragma mark- Public
+
+/// 初始化统计模块, 包括初始化 iad Facebook adjust三个模块
++ (void)configWithApplication:(UIApplication *)application
+                      options:(NSDictionary *)launchOptions {
+    
+    [self facebookSDKApplication:application options:launchOptions];
+    [self iAdLaunching];
+    [self adjustLaunching];
+}
+
+/// 购买完成后调用, 内部处理统计
++ (void)purchaseWithProduct:(SKProduct *)product {
+    
+    double localPrice = 0;
+#ifdef MODULE_IAP_MANAGER
+    localPrice = [[[IAPManager sharedInstance] localePriceForProduct:product] doubleValue];
+#else
+    localPrice = [product.price doubleValue];
+#endif
+    
+    NSString *currency = nil;
+    if (@available(iOS 10.0, *)) {
+        currency = [product.priceLocale currencyCode];
+    } else {
+        currency = [product.priceLocale objectForKey:NSLocaleCurrencyCode];
+    }
+    
+    NSString *productId = product.productIdentifier;
+    
+    /// 如果是试用
+    if ([productId hasSuffix:@"_Trial"]) {
+        [self facebookAddedToCartEvent:@""
+                             contentId:productId
+                           contentType:@""
+                              currency:currency
+                            valueToSum:localPrice];
+        
+#ifdef AdjustAddedToCartEvent
+        [self adjustEventWithEventToken:AdjustAddedToCartEvent];
+#endif
+        
+    } else {
+        [self facebookPurchaseEvent:@""
+                          contentId:productId
+                        contentType:@""
+                           currency:currency
+                         valueToSum:localPrice];
+        
+#ifdef AdjustRevenueEvent
+        [self adjustSetRevenue:localPrice currency:currency eventToken:AdjustRevenueEvent];
+#endif
+        
+    }
+}
 
 #pragma mark- 归因API
 
@@ -105,7 +166,7 @@
     
     double localPrice = 0;
 #ifdef MODULE_IAP_MANAGER
-    localPrice = [[[IAPManager sharedInstance] localePriceForProduct:product] doubleValue]
+    localPrice = [[[IAPManager sharedInstance] localePriceForProduct:product] doubleValue];
 #else
     localPrice = [product.price doubleValue];
 #endif
@@ -215,9 +276,9 @@
 /// Adjust 配置
 + (void)adjustLaunching {
     
-#ifdef AdJustAppToken
+#ifdef AdjustAppToken
     
-    NSString *yourAppToken = AdJustAppToken;
+    NSString *yourAppToken = AdjustAppToken;
     
 #if defined(DEBUG) || defined(ForTest)
     ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken environment:ADJEnvironmentSandbox];

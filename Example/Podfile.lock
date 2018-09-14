@@ -11,6 +11,8 @@ PODS:
   - FBSDKCoreKit (4.36.0):
     - Bolts (~> 1.7)
   - MJAnalyse (0.1.0):
+    - Adjust (~> 4.15.0)
+    - FBSDKCoreKit (~> 4.36.0)
     - ModuleCapability
   - ModuleCapability (0.1.10)
 
@@ -36,7 +38,7 @@ SPEC CHECKSUMS:
   Adjust: 30d2cf13dad1a8ba08cf5082d312a26b21da3f29
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   FBSDKCoreKit: 3b8e6570eedb443f9fc4af196a7bf39f18e3a3d8
-  MJAnalyse: eec02e2fc1cc481095e23e93d43eedb10aba886f
+  MJAnalyse: 36805f49f7a4a2bd067254e02f48c283e5398634
   ModuleCapability: 458b13fd20e195060b9f55451da78294e39da8f0
 
 PODFILE CHECKSUM: e9a1f8b5fb2c831035def5182dd5945c47fc9be8
