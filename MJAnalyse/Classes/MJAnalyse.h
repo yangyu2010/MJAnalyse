@@ -19,7 +19,7 @@
 
 //  3. 如果有内购, 在内购完成后 调用 [MJAnalyse purchaseWithProduct:]
 
-
+//  4. 加入购物车, 是点击内购按钮 调用 [MJAnalyse addedToCartWithProduct:]
 
 
 
@@ -38,6 +38,9 @@
 
 /// 购买完成后调用, 内部处理统计
 + (void)purchaseWithProduct:(SKProduct *)product;
+
+/// 点击购买按钮事件(加入购物车)
++ (void)addedToCartWithProduct:(SKProduct *)product;
 
 
 
@@ -83,7 +86,6 @@
 
 /**
  Facebook统计, "添加到购物车"
- 某个内购有试用时, 才使用该事件记录, 其他内购不使用这个事件
 
  @param contentData 一些数据(目前没有规定是什么, 后续看市场需要我们提供哪些数据) 目前传""
  @param contentId 内购的key

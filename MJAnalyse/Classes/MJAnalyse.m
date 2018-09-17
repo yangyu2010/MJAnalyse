@@ -54,32 +54,51 @@
     }
     
     NSString *productId = product.productIdentifier;
+
     
-    /// 如果是试用
-    if ([productId hasSuffix:@"_Trial"]) {
-        [self facebookAddedToCartEvent:@""
-                             contentId:productId
-                           contentType:@""
-                              currency:currency
-                            valueToSum:localPrice];
-        
-#ifdef AdjustAddedToCartEvent
-        [self adjustEventWithEventToken:AdjustAddedToCartEvent];
-#endif
-        
-    } else {
-        [self facebookPurchaseEvent:@""
-                          contentId:productId
-                        contentType:@""
-                           currency:currency
-                         valueToSum:localPrice];
-        
+    [self facebookPurchaseEvent:@""
+                      contentId:productId
+                    contentType:@""
+                       currency:currency
+                     valueToSum:localPrice];
+    
 #ifdef AdjustRevenueEvent
-        [self adjustSetRevenue:localPrice currency:currency eventToken:AdjustRevenueEvent];
+    [self adjustSetRevenue:localPrice currency:currency eventToken:AdjustRevenueEvent];
 #endif
-        
-    }
+
 }
+
+/// 点击购买按钮事件(加入购物车)
++ (void)addedToCartWithProduct:(SKProduct *)product {
+    
+    double localPrice = 0;
+#ifdef MODULE_IAP_MANAGER
+    localPrice = [[[IAPManager sharedInstance] localePriceForProduct:product] doubleValue];
+#else
+    localPrice = [product.price doubleValue];
+#endif
+    
+    NSString *currency = nil;
+    if (@available(iOS 10.0, *)) {
+        currency = [product.priceLocale currencyCode];
+    } else {
+        currency = [product.priceLocale objectForKey:NSLocaleCurrencyCode];
+    }
+    
+    NSString *productId = product.productIdentifier;
+    
+    [self facebookAddedToCartEvent:@""
+                         contentId:productId
+                       contentType:@""
+                          currency:currency
+                        valueToSum:localPrice];
+    
+#ifdef AdjustAddedToCartEvent
+    [self adjustEventWithEventToken:AdjustAddedToCartEvent];
+#endif
+}
+
+
 
 #pragma mark- 归因API
 
@@ -322,5 +341,7 @@
     ADJEvent *event = [ADJEvent eventWithEventToken:eventToken];
     [Adjust trackEvent:event];
 }
+
+
 
 @end
