@@ -55,13 +55,17 @@
     
     NSString *productId = product.productIdentifier;
 
-    
+    /// facebook平台
     [self facebookPurchaseEvent:@""
                       contentId:productId
                     contentType:@""
                        currency:currency
                      valueToSum:localPrice];
     
+    /// 归因平台
+    [self iAdPurchase];
+    
+    /// Adjust平台
 #ifdef AdjustRevenueEvent
     [self adjustSetRevenue:localPrice currency:currency eventToken:AdjustRevenueEvent];
 #endif
