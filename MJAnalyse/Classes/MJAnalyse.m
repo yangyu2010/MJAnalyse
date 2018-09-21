@@ -40,11 +40,7 @@
 + (void)purchaseWithProduct:(SKProduct *)product {
     
     double localPrice = 0;
-#ifdef MODULE_IAP_MANAGER
-    localPrice = [[[IAPManager sharedInstance] localePriceForProduct:product] doubleValue];
-#else
     localPrice = [product.price doubleValue];
-#endif
     
     NSString *currency = nil;
     if (@available(iOS 10.0, *)) {
@@ -76,11 +72,7 @@
 + (void)addedToCartWithProduct:(SKProduct *)product {
     
     double localPrice = 0;
-#ifdef MODULE_IAP_MANAGER
-    localPrice = [[[IAPManager sharedInstance] localePriceForProduct:product] doubleValue];
-#else
     localPrice = [product.price doubleValue];
-#endif
     
     NSString *currency = nil;
     if (@available(iOS 10.0, *)) {
