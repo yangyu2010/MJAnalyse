@@ -133,8 +133,7 @@
  @param eventToken 该事件的token, 每个app可能不同
  */
 + (void)adjustSetRevenue:(double)amount
-                currency:(nonnull NSString *)currency
-              eventToken:(NSString *)eventToken;
+                currency:(nonnull NSString *)currency;
 
 
 /**

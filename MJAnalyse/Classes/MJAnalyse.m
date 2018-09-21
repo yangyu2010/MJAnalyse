@@ -63,7 +63,7 @@
     
     /// Adjust平台
 #ifdef AdjustRevenueEvent
-    [self adjustSetRevenue:localPrice currency:currency eventToken:AdjustRevenueEvent];
+    [self adjustSetRevenue:localPrice currency:currency];
 #endif
 
 }
@@ -180,11 +180,7 @@
 + (void)facebookPurchaseWithProduct:(SKProduct *)product {
     
     double localPrice = 0;
-#ifdef MODULE_IAP_MANAGER
-    localPrice = [[[IAPManager sharedInstance] localePriceForProduct:product] doubleValue];
-#else
     localPrice = [product.price doubleValue];
-#endif
     
     NSString *currency = nil;
     if (@available(iOS 10.0, *)) {
@@ -313,18 +309,14 @@
  收入跟踪
  */
 + (void)adjustSetRevenue:(double)amount
-                currency:(nonnull NSString *)currency
-              eventToken:(NSString *)eventToken {
-    
-    if (eventToken.length == 0) {
-        return ;
-    }
+                currency:(nonnull NSString *)currency {
     
 #ifdef AdjustRevenueEvent
-    ADJEvent *event = [ADJEvent eventWithEventToken:eventToken];
+    ADJEvent *event = [ADJEvent eventWithEventToken:AdjustRevenueEvent];
     [event setRevenue:amount currency:currency];
+    [Adjust trackEvent:event];
 #endif
-
+    
 }
 
 
