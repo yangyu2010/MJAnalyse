@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
     s.source_files = 'MJAnalyse/Classes/**/*'
     
     s.dependency 'ModuleCapability'
-    s.dependency 'FBSDKCoreKit', '~> 4.36.0'
-    s.dependency 'Adjust', '~> 4.15.0'
+    s.dependency 'FBSDKCoreKit'
+    s.dependency 'Adjust'
     
 end

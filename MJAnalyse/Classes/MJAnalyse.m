@@ -13,9 +13,7 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <Adjust/Adjust.h>
 
-#ifdef MODULE_IAP_MANAGER
-#import <MJIAPManager/IAPManager.h>
-#endif
+#import <FirebaseCore/FIRApp.h>
 
 /// 存储归因
 #define kLastSearchGroupId  @"kLastSearchGroupId"
@@ -34,65 +32,78 @@
     [self facebookSDKApplication:application options:launchOptions];
     [self iAdLaunching];
     [self adjustLaunching];
+    [FIRApp configure];
 }
 
-/// 购买完成后调用, 内部处理统计
-+ (void)purchaseWithProduct:(SKProduct *)product {
+
+/// 记录内购相关的统计
++ (void)analysePurchaseWithStatus:(MJAnalysePurchaseStatus)status
+                          product:(SKProduct *)product {
     
-    double localPrice = 0;
-    localPrice = [product.price doubleValue];
-    
+    double localPrice = [product.price doubleValue];
+
     NSString *currency = nil;
     if (@available(iOS 10.0, *)) {
         currency = [product.priceLocale currencyCode];
     } else {
         currency = [product.priceLocale objectForKey:NSLocaleCurrencyCode];
     }
-    
+
     NSString *productId = product.productIdentifier;
 
-    /// facebook平台
-    [self facebookPurchaseEvent:@""
-                      contentId:productId
-                    contentType:@""
-                       currency:currency
-                     valueToSum:localPrice];
-    
-    /// 归因平台
-    [self iAdPurchase];
-    
-    /// Adjust平台
-#ifdef AdjustRevenueEvent
-    [self adjustSetRevenue:localPrice currency:currency];
-#endif
+    [self analysePurchaseWithStatus:status
+                          productId:productId
+                           currency:currency
+                              price:localPrice];
+}
 
+/// 记录内购相关的统计
++ (void)analysePurchaseWithStatus:(MJAnalysePurchaseStatus)status
+                             info:(NSDictionary *)info {
+    
+    double localPrice = [info[@"price"] doubleValue];
+    NSString *currency = info[@"currency"];
+    NSString *productId = info[@"productId"];
+
+    [self analysePurchaseWithStatus:status
+                          productId:productId
+                           currency:currency
+                              price:localPrice];
+}
+
+/// 记录内购相关的统计
++ (void)analysePurchaseWithStatus:(MJAnalysePurchaseStatus)status
+                        productId:(NSString *)productId
+                         currency:(NSString *)currency
+                            price:(double)price {
+    
+    if (status == MJAnalysePurchaseAddToCart) {
+        /// 加入购物车
+        [self addedToCartWithProductId:productId currency:currency valueToSum:price];
+    }
+    else if (status == MJAnalysePurchaseSucceed) {
+        /// 成功
+        [self purchaseWithProductId:productId currency:currency valueToSum:price];
+    }
+    else if (status == MJAnalysePurchaseTrialToPay) {
+        /// 转为付费
+        [self trialToPayWithProductId:productId currency:currency valueToSum:price];
+    }
+}
+
+
+
+#pragma mark- 废弃了, 请使用上面的API
+/// 购买完成后调用, 内部处理统计
++ (void)purchaseWithProduct:(SKProduct *)product {
+    [self analysePurchaseWithStatus:MJAnalysePurchaseSucceed product:product];
 }
 
 /// 点击购买按钮事件(加入购物车)
 + (void)addedToCartWithProduct:(SKProduct *)product {
-    
-    double localPrice = 0;
-    localPrice = [product.price doubleValue];
-    
-    NSString *currency = nil;
-    if (@available(iOS 10.0, *)) {
-        currency = [product.priceLocale currencyCode];
-    } else {
-        currency = [product.priceLocale objectForKey:NSLocaleCurrencyCode];
-    }
-    
-    NSString *productId = product.productIdentifier;
-    
-    [self facebookAddedToCartEvent:@""
-                         contentId:productId
-                       contentType:@""
-                          currency:currency
-                        valueToSum:localPrice];
-    
-#ifdef AdjustAddedToCartEvent
-    [self adjustEventWithEventToken:AdjustAddedToCartEvent];
-#endif
+    [self analysePurchaseWithStatus:MJAnalysePurchaseAddToCart product:product];
 }
+
 
 
 
@@ -282,6 +293,43 @@
 }
 
 
+/**
+ Facebook统计, "试用转付费", 对应Facebook的 "开始结账" 事件
+ FBSDKAppEventNameInitiatedCheckout
+ 某个试用转成付费后, 用该事件记录
+ */
++ (void)facebookTrialToPayEvent:(NSString *)contentData
+                      contentId:(NSString *)contentId
+                    contentType:(NSString *)contentType
+                       currency:(NSString *)currency
+                     valueToSum:(double)price {
+    
+    if (contentData == nil) {
+        contentData = @"";
+    }
+    if (contentId == nil) {
+        contentId = @"";
+    }
+    if (contentType == nil) {
+        contentType = @"";
+    }
+    if (currency == nil) {
+        currency = @"";
+    }
+    
+    NSDictionary *params =
+    @{
+      FBSDKAppEventParameterNameContent : contentData,
+      FBSDKAppEventParameterNameContentID : contentId,
+      FBSDKAppEventParameterNameContentType : contentType,
+      FBSDKAppEventParameterNameCurrency : currency
+      };
+    
+    [FBSDKAppEvents logEvent:FBSDKAppEventNameInitiatedCheckout
+                  valueToSum:price
+                  parameters:params];
+}
+
 #pragma mark- Adjust
 
 /// Adjust 配置
@@ -331,5 +379,61 @@
 }
 
 
+
+#pragma mark- Private
+
+///// 购买完成后调用, 内部处理统计
++ (void)purchaseWithProductId:(NSString *)productId
+                     currency:(NSString *)currency
+                   valueToSum:(double)price {
+    
+    /// facebook平台
+    [self facebookPurchaseEvent:@""
+                      contentId:productId
+                    contentType:@""
+                       currency:currency
+                     valueToSum:price];
+    
+    /// 归因平台
+    [self iAdPurchase];
+    
+    /// Adjust平台
+#ifdef AdjustRevenueEvent
+    [self adjustSetRevenue:price currency:currency];
+#endif
+}
+
+
+/// 点击购买按钮事件(加入购物车)
++ (void)addedToCartWithProductId:(NSString *)productId
+                        currency:(NSString *)currency
+                      valueToSum:(double)price {
+    
+    [self facebookAddedToCartEvent:@""
+                         contentId:productId
+                       contentType:@""
+                          currency:currency
+                        valueToSum:price];
+    
+#ifdef AdjustAddedToCartEvent
+    [self adjustEventWithEventToken:AdjustAddedToCartEvent];
+#endif
+}
+
+/// 付费转试用
++ (void)trialToPayWithProductId:(NSString *)productId
+                       currency:(NSString *)currency
+                     valueToSum:(double)price {
+    
+    [self facebookTrialToPayEvent:@""
+                        contentId:productId
+                      contentType:@""
+                         currency:currency
+                       valueToSum:price];
+    
+#ifdef AdjustTrailToPayEvent
+    [self adjustEventWithEventToken:AdjustTrailToPayEvent];
+#endif
+}
 
 @end
