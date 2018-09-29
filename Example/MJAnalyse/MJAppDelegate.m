@@ -7,11 +7,17 @@
 //
 
 #import "MJAppDelegate.h"
+#import <MJAnalyse.h>
+
 
 @implementation MJAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+    NSLog(@"NSHomeDirectory__ %@", NSHomeDirectory());
+    
+    [MJAnalyse configWithApplication:application options:launchOptions];
 
     return YES;
 }

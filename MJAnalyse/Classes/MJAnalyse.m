@@ -13,7 +13,9 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <Adjust/Adjust.h>
 
-#import <FirebaseCore/FIRApp.h>
+#ifdef MODULE_WEB_INTERFACE
+#import <WebInterface/WebInterface.h>
+#endif
 
 /// 存储归因
 #define kLastSearchGroupId  @"kLastSearchGroupId"
@@ -32,7 +34,7 @@
     [self facebookSDKApplication:application options:launchOptions];
     [self iAdLaunching];
     [self adjustLaunching];
-    [FIRApp configure];
+//    [FIRApp configure];
 }
 
 
@@ -138,6 +140,10 @@
                         triggerEventStr(@"keyword_install_count", keyword);
                         [[NSUserDefaults standardUserDefaults] setObject:groupId forKey:kLastSearchGroupId];
                         [[NSUserDefaults standardUserDefaults] synchronize];
+
+#ifdef MODULE_WEB_INTERFACE
+                        [WebInterface startRequest:@"MJAnalyse.iad" describe:@"MJAnalyse.iad" body:attributionDetails completion:nil];
+#endif
                     }
                 }
 

@@ -1,14 +1,22 @@
 PODS:
+  - ActionProtocol (0.1.1)
   - Adjust (4.15.0):
     - Adjust/Core (= 4.15.0)
   - Adjust/Core (4.15.0)
+  - AFNetworking/NSURLSession (3.2.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.2.1)
+  - AFNetworking/Security (3.2.1)
+  - AFNetworking/Serialization (3.2.1)
   - Bolts (1.9.0):
     - Bolts/AppLinks (= 1.9.0)
     - Bolts/Tasks (= 1.9.0)
   - Bolts/AppLinks (1.9.0):
     - Bolts/Tasks
   - Bolts/Tasks (1.9.0)
-  - FBSDKCoreKit (4.36.0):
+  - FBSDKCoreKit (4.37.0):
     - Bolts (~> 1.7)
   - Firebase/Core (5.9.0):
     - Firebase/CoreOnly
@@ -69,9 +77,12 @@ PODS:
   - GoogleUtilities/UserDefaults (5.3.0):
     - GoogleUtilities/Logger
   - MJAnalyse (0.1.4):
-    - Adjust (~> 4.15.0)
-    - FBSDKCoreKit (~> 4.36.0)
+    - Adjust
+    - FBSDKCoreKit
     - ModuleCapability
+  - MJWebService (0.1.26):
+    - AFNetworking/NSURLSession (~> 3)
+    - ModuleCapability (~> 0.1)
   - ModuleCapability (0.1.10)
   - nanopb (0.3.8):
     - nanopb/decode (= 0.3.8)
@@ -79,6 +90,15 @@ PODS:
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
   - Protobuf (3.6.1)
+  - WebInterface (0.1.10):
+    - ActionProtocol (~> 0.1)
+    - MJWebService (~> 0.1)
+    - ModuleCapability (~> 0.1)
+    - WebInterface/Core (= 0.1.10)
+  - WebInterface/Core (0.1.10):
+    - ActionProtocol (~> 0.1)
+    - MJWebService (~> 0.1)
+    - ModuleCapability (~> 0.1)
 
 DEPENDENCIES:
   - Adjust
@@ -87,12 +107,17 @@ DEPENDENCIES:
   - Firebase/Crash
   - MJAnalyse (from `../`)
   - ModuleCapability
+  - WebInterface
 
 SPEC REPOS:
   "git@git.musjoy.com:PodSpecs.git":
+    - ActionProtocol
+    - MJWebService
     - ModuleCapability
+    - WebInterface
   https://github.com/cocoapods/specs.git:
     - Adjust
+    - AFNetworking
     - Bolts
     - FBSDKCoreKit
     - Firebase
@@ -111,9 +136,11 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
+  ActionProtocol: 2331f4c31d5be0786c248920fceece0234cfe07f
   Adjust: 30d2cf13dad1a8ba08cf5082d312a26b21da3f29
+  AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
-  FBSDKCoreKit: 3b8e6570eedb443f9fc4af196a7bf39f18e3a3d8
+  FBSDKCoreKit: fe5f3474499a81963e11e3f3a5c753d0a95ca2b4
   Firebase: 383fa29aca93e371cab776b48a5c66544d3c2003
   FirebaseAnalytics: 831f1f127f4a75698e9875a87bf7e2668730d953
   FirebaseCore: 2a84b6b325792a4319ef71ee18819dcba08d2fd7
@@ -122,11 +149,13 @@ SPEC CHECKSUMS:
   GoogleAppMeasurement: 2b3a023a61239c8d002e6e4fcf4abce8eddce0e0
   GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
   GoogleUtilities: 760ccb53b7c7f40f9c02d8c241f76f841a7a6162
-  MJAnalyse: 748f04deceec8ea6014127f413042cfa997d63d6
+  MJAnalyse: bb0cfdb33bf8f837c2543ef06a1bdf6a1aa03ea2
+  MJWebService: 211d40d43d10a23cda9aeab86c42fcacbd5241aa
   ModuleCapability: 458b13fd20e195060b9f55451da78294e39da8f0
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
+  WebInterface: d70d88dc68e130f038a1e50aecd0a0e9c2843205
 
-PODFILE CHECKSUM: 809a391de9e3061b2bc9866ff54296072b5b1878
+PODFILE CHECKSUM: 6492870d60dd0635ecd2d0605102666ea5e7f826
 
 COCOAPODS: 1.5.3
