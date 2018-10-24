@@ -14,8 +14,8 @@
  #define AdjustAddedToCartEvent  @"AdjustAddedToCartEvent"
  /// 购买token, 如不需要统计, 不定义
  #define AdjustRevenueEvent  @"AdjustRevenueEvent"
- /// 试用转付费token
- #define AdjustTrailToPayEvent      @"AdjustTrailToPayEvent"
+ /// 开始结账token
+ #define AdjustInitiatedCheckout      @"AdjustInitiatedCheckout"
  */
 
 //  2. 在 didFinishLaunchingWithOptions 中 调用[MJAnalyse configWithApplication:options:]方法
@@ -28,9 +28,11 @@
 
 /// 记录内购方面的统计需要
 typedef enum : NSUInteger {
-    MJAnalysePurchaseAddToCart = 0,     ///< 加入购物车, 点击内购按钮d时的状态
-    MJAnalysePurchaseSucceed,           ///< 内购完成
-    MJAnalysePurchaseTrialToPay,        ///< 内购从试用转为付费状态
+    MJAnalysePurchaseAddToCart = 1,         ///< 加入购物车, 点击内购按钮d时的状态
+    MJAnalysePurchaseSucceed,               ///< 内购完成
+    MJAnalysePurchaseInitiatedCheckout,     ///< 开始结账
+    
+    MJAnalysePurchaseTrialToPay,            ///< 内购从试用转为付费状态(目前没有用到)
 } MJAnalysePurchaseStatus;
 
 
@@ -138,15 +140,15 @@ typedef enum : NSUInteger {
 
 
 /**
- Facebook统计, "试用转付费", 对应Facebook的 "开始结账" 事件
+ Facebook统计, "开始结账" 事件
  FBSDKAppEventNameInitiatedCheckout
  某个试用转成付费后, 用该事件记录
  */
-+ (void)facebookTrialToPayEvent:(NSString *)contentData
-                       contentId:(NSString *)contentId
-                     contentType:(NSString *)contentType
-                        currency:(NSString *)currency
-                      valueToSum:(double)price;
++ (void)facebookInitiatedCheckout:(NSString *)contentData
+                        contentId:(NSString *)contentId
+                      contentType:(NSString *)contentType
+                         currency:(NSString *)currency
+                       valueToSum:(double)price;
 
 
 #pragma mark- Adjust

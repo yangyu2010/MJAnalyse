@@ -34,7 +34,7 @@
     [self facebookSDKApplication:application options:launchOptions];
     [self iAdLaunching];
     [self adjustLaunching];
-//    [FIRApp configure];
+
 }
 
 
@@ -87,8 +87,8 @@
         /// 成功
         [self purchaseWithProductId:productId currency:currency valueToSum:price];
     }
-    else if (status == MJAnalysePurchaseTrialToPay) {
-        /// 转为付费
+    else if (status == MJAnalysePurchaseInitiatedCheckout) {
+        /// 开始结账
         [self trialToPayWithProductId:productId currency:currency valueToSum:price];
     }
 }
@@ -140,9 +140,11 @@
                         triggerEventStr(@"keyword_install_count", keyword);
                         [[NSUserDefaults standardUserDefaults] setObject:groupId forKey:kLastSearchGroupId];
                         [[NSUserDefaults standardUserDefaults] synchronize];
-
+                   
 #ifdef MODULE_WEB_INTERFACE
+#ifndef ForTest
                         [WebInterface startRequest:@"MJAnalyse.iad" describe:@"MJAnalyse.iad" body:attributionDetails completion:nil];
+#endif
 #endif
                     }
                 }
@@ -300,15 +302,15 @@
 
 
 /**
- Facebook统计, "试用转付费", 对应Facebook的 "开始结账" 事件
+ Facebook统计, "开始结账" 事件
  FBSDKAppEventNameInitiatedCheckout
  某个试用转成付费后, 用该事件记录
  */
-+ (void)facebookTrialToPayEvent:(NSString *)contentData
-                      contentId:(NSString *)contentId
-                    contentType:(NSString *)contentType
-                       currency:(NSString *)currency
-                     valueToSum:(double)price {
++ (void)facebookInitiatedCheckout:(NSString *)contentData
+                        contentId:(NSString *)contentId
+                      contentType:(NSString *)contentType
+                         currency:(NSString *)currency
+                       valueToSum:(double)price {
     
     if (contentData == nil) {
         contentData = @"";
@@ -426,19 +428,19 @@
 #endif
 }
 
-/// 付费转试用
+/// 开始结账
 + (void)trialToPayWithProductId:(NSString *)productId
                        currency:(NSString *)currency
                      valueToSum:(double)price {
     
-    [self facebookTrialToPayEvent:@""
-                        contentId:productId
-                      contentType:@""
-                         currency:currency
-                       valueToSum:price];
+    [self facebookInitiatedCheckout:@""
+                          contentId:productId
+                        contentType:@""
+                           currency:currency
+                         valueToSum:price];
     
-#ifdef AdjustTrailToPayEvent
-    [self adjustEventWithEventToken:AdjustTrailToPayEvent];
+#ifdef AdjustInitiatedCheckout
+    [self adjustEventWithEventToken:AdjustInitiatedCheckout];
 #endif
 }
 
