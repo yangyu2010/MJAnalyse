@@ -17,6 +17,10 @@
 #import <WebInterface/WebInterface.h>
 #endif
 
+#ifdef HEADER_ANALYSE
+#import HEADER_ANALYSE
+#endif
+
 /// 存储归因
 #define kLastSearchGroupId  @"kLastSearchGroupId"
 /// 存储归因广告信息本地key

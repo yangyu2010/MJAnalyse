@@ -16,7 +16,9 @@
  #define AdjustRevenueEvent  @"AdjustRevenueEvent"
  /// 开始结账token
  #define AdjustInitiatedCheckout      @"AdjustInitiatedCheckout"
- */
+ 
+ 等等其他的事件宏定义
+  */
 
 //  2. 在 didFinishLaunchingWithOptions 中 调用[MJAnalyse configWithApplication:options:]方法
 
@@ -25,6 +27,11 @@
 //  [MJAnalyse analysePurchaseWithStatus:info:]
 //  [MJAnalyse analysePurchaseWithStatus:productId:currency:price:]
 
+
+/// 统计登录
+/// [MJAnalyse adjustEventWithEventToken:AdjustEventNameLogin];
+/// 统计分享
+/// [MJAnalyse adjustEventWithEventToken:AdjustEventNameShare];
 
 /// 记录内购方面的统计需要
 typedef enum : NSUInteger {
