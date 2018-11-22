@@ -44,37 +44,12 @@
 
 /// 记录内购相关的统计
 + (void)analysePurchaseWithStatus:(MJAnalysePurchaseStatus)status
-                          product:(SKProduct *)product {
+                        productId:(NSString *)productId {
     
-    double localPrice = [product.price doubleValue];
-
-    NSString *currency = nil;
-    if (@available(iOS 10.0, *)) {
-        currency = [product.priceLocale currencyCode];
-    } else {
-        currency = [product.priceLocale objectForKey:NSLocaleCurrencyCode];
-    }
-
-    NSString *productId = product.productIdentifier;
-
     [self analysePurchaseWithStatus:status
                           productId:productId
-                           currency:currency
-                              price:localPrice];
-}
-
-/// 记录内购相关的统计
-+ (void)analysePurchaseWithStatus:(MJAnalysePurchaseStatus)status
-                             info:(NSDictionary *)info {
-    
-    double localPrice = [info[@"price"] doubleValue];
-    NSString *currency = info[@"currency"];
-    NSString *productId = info[@"productId"];
-
-    [self analysePurchaseWithStatus:status
-                          productId:productId
-                           currency:currency
-                              price:localPrice];
+                           currency:@""
+                              price:0];
 }
 
 /// 记录内购相关的统计
@@ -82,7 +57,6 @@
                         productId:(NSString *)productId
                          currency:(NSString *)currency
                             price:(double)price {
-    
     if (status == MJAnalysePurchaseAddToCart) {
         /// 加入购物车
         [self addedToCartWithProductId:productId currency:currency valueToSum:price];
@@ -96,22 +70,6 @@
         [self trialToPayWithProductId:productId currency:currency valueToSum:price];
     }
 }
-
-
-
-#pragma mark- 废弃了, 请使用上面的API
-/// 购买完成后调用, 内部处理统计
-+ (void)purchaseWithProduct:(SKProduct *)product {
-    [self analysePurchaseWithStatus:MJAnalysePurchaseSucceed product:product];
-}
-
-/// 点击购买按钮事件(加入购物车)
-+ (void)addedToCartWithProduct:(SKProduct *)product {
-    [self analysePurchaseWithStatus:MJAnalysePurchaseAddToCart product:product];
-}
-
-
-
 
 #pragma mark- 归因API
 
@@ -195,39 +153,6 @@
     
     BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application openURL:url options:options];
     return handled;
-}
-
-/**
- Facebook统计, 外部购买时调用, 外部不用区分是否是续订型
- */
-+ (void)facebookPurchaseWithProduct:(SKProduct *)product {
-    
-    double localPrice = 0;
-    localPrice = [product.price doubleValue];
-    
-    NSString *currency = nil;
-    if (@available(iOS 10.0, *)) {
-        currency = [product.priceLocale currencyCode];
-    } else {
-        currency = [product.priceLocale objectForKey:NSLocaleCurrencyCode];
-    }
-    
-    NSString *productId = product.productIdentifier;
-    
-    /// 如果是试用
-    if ([productId hasSuffix:@"_Trial"]) {
-        [self facebookAddedToCartEvent:@""
-                             contentId:productId
-                           contentType:@""
-                              currency:currency
-                            valueToSum:localPrice];
-    } else {
-        [self facebookPurchaseEvent:@""
-                          contentId:productId
-                        contentType:@""
-                           currency:currency
-                         valueToSum:localPrice];
-    }
 }
 
 
@@ -341,6 +266,7 @@
                   valueToSum:price
                   parameters:params];
 }
+
 
 #pragma mark- Adjust
 

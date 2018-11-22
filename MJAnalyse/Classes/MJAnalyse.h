@@ -22,9 +22,8 @@
 
 //  2. 在 didFinishLaunchingWithOptions 中 调用[MJAnalyse configWithApplication:options:]方法
 
-//  3. 如要统计内购 调用下面三个其中一个
-//  [MJAnalyse analysePurchaseWithStatus:product:]
-//  [MJAnalyse analysePurchaseWithStatus:info:]
+//  3. 如要统计内购 调用下面其中一个
+//  [MJAnalyse analysePurchaseWithStatus:productId:] 推荐使用
 //  [MJAnalyse analysePurchaseWithStatus:productId:currency:price:]
 
 
@@ -35,9 +34,9 @@
 
 /// 记录内购方面的统计需要
 typedef enum : NSUInteger {
-    MJAnalysePurchaseAddToCart = 1,         ///< 加入购物车, 点击内购按钮d时的状态
+    MJAnalysePurchaseAddToCart = 1,         ///< 加入购物车, 点击内购按钮的时的状态
     MJAnalysePurchaseSucceed,               ///< 内购完成
-    MJAnalysePurchaseInitiatedCheckout,     ///< 开始结账
+    MJAnalysePurchaseInitiatedCheckout,     ///< 开始结账(购买金币完成)
     
     MJAnalysePurchaseTrialToPay,            ///< 内购从试用转为付费状态(目前没有用到)
 } MJAnalysePurchaseStatus;
@@ -56,27 +55,16 @@ typedef enum : NSUInteger {
 + (void)configWithApplication:(UIApplication *)application
                       options:(NSDictionary *)launchOptions;;
 
-/// 记录内购相关的统计 传入product
-+ (void)analysePurchaseWithStatus:(MJAnalysePurchaseStatus)status
-                          product:(SKProduct *)product;
 
-/// 记录内购相关的统计
-/// info字典里需传入  price currency productId
+/// 记录内购相关的统计 推荐使用
 + (void)analysePurchaseWithStatus:(MJAnalysePurchaseStatus)status
-                             info:(NSDictionary *)info;
+                        productId:(NSString *)productId;
 
 /// 记录内购相关的统计
 + (void)analysePurchaseWithStatus:(MJAnalysePurchaseStatus)status
                         productId:(NSString *)productId
                          currency:(NSString *)currency
                             price:(double)price;
-
-
-#pragma mark- 废弃了, 请使用上面的API
-/// 购买完成后调用, 内部处理统计
-+ (void)purchaseWithProduct:(SKProduct *)product NS_DEPRECATED_IOS(2_0, 9_0, "API已经废弃, 请使用 [MJAnalyse analysePurchaseWithStatus:product:]");
-/// 点击购买按钮事件(加入购物车)
-+ (void)addedToCartWithProduct:(SKProduct *)product NS_DEPRECATED_IOS(2_0, 9_0, "API已经废弃, 请使用 [MJAnalyse analysePurchaseWithStatus:product:]");
 
 
 #pragma mark- 归因API
@@ -109,14 +97,6 @@ typedef enum : NSUInteger {
 + (BOOL)facebookHandleUrl:(NSURL *)url
               application:(UIApplication *)application
                   options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options;
-
-
-/**
- Facebook统计, 外部购买时调用, 外部不用区分是否是续订型
- 
- @param product SKProduct
- */
-+ (void)facebookPurchaseWithProduct:(SKProduct *)product;
 
 
 /**
