@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
     s.name             = 'MJAnalyse'
-    s.version          = '0.1.8'
+    s.version          = '0.2.0'
     s.summary          = '整理所有的第三方统计'
 
     s.homepage         = 'https://github.com/yangyu2010/MJAnalyse'
