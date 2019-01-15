@@ -1,8 +1,8 @@
 PODS:
   - ActionProtocol (0.1.1)
-  - Adjust (4.15.0):
-    - Adjust/Core (= 4.15.0)
-  - Adjust/Core (4.15.0)
+  - Adjust (4.17.1):
+    - Adjust/Core (= 4.17.1)
+  - Adjust/Core (4.17.1)
   - AFNetworking/NSURLSession (3.2.1):
     - AFNetworking/Reachability
     - AFNetworking/Security
@@ -18,65 +18,51 @@ PODS:
   - Bolts/Tasks (1.9.0)
   - FBSDKCoreKit (4.37.0):
     - Bolts (~> 1.7)
-  - Firebase/Core (5.9.0):
+  - Firebase/Core (5.15.0):
     - Firebase/CoreOnly
-    - FirebaseAnalytics (= 5.2.0)
-  - Firebase/CoreOnly (5.9.0):
-    - FirebaseCore (= 5.1.4)
-  - Firebase/Crash (5.9.0):
-    - Firebase/Core
-    - FirebaseCrash (= 3.1.1)
-  - FirebaseAnalytics (5.2.0):
+    - FirebaseAnalytics (= 5.4.0)
+  - Firebase/CoreOnly (5.15.0):
+    - FirebaseCore (= 5.1.10)
+  - FirebaseAnalytics (5.4.0):
     - FirebaseCore (~> 5.1)
-    - FirebaseInstanceID (~> 3.2)
-    - GoogleAppMeasurement (~> 5.2)
+    - FirebaseInstanceID (~> 3.3)
+    - GoogleAppMeasurement (= 5.4.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 5.2)
     - GoogleUtilities/MethodSwizzler (~> 5.2)
     - GoogleUtilities/Network (~> 5.2)
     - "GoogleUtilities/NSData+zlib (~> 5.2)"
     - nanopb (~> 0.3)
-  - FirebaseCore (5.1.4):
+  - FirebaseCore (5.1.10):
     - GoogleUtilities/Logger (~> 5.2)
-  - FirebaseCrash (3.1.1):
-    - FirebaseAnalytics (~> 5.1)
-    - FirebaseInstanceID (~> 3.2)
-    - GoogleToolboxForMac/Logger (~> 2.1)
-    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
-    - Protobuf (~> 3.5)
-  - FirebaseInstanceID (3.2.2):
+  - FirebaseInstanceID (3.3.0):
     - FirebaseCore (~> 5.1)
     - GoogleUtilities/Environment (~> 5.3)
     - GoogleUtilities/UserDefaults (~> 5.3)
-  - GoogleAppMeasurement (5.2.0):
+  - GoogleAppMeasurement (5.4.0):
     - GoogleUtilities/AppDelegateSwizzler (~> 5.2)
     - GoogleUtilities/MethodSwizzler (~> 5.2)
     - GoogleUtilities/Network (~> 5.2)
     - "GoogleUtilities/NSData+zlib (~> 5.2)"
     - nanopb (~> 0.3)
-  - GoogleToolboxForMac/Defines (2.1.4)
-  - GoogleToolboxForMac/Logger (2.1.4):
-    - GoogleToolboxForMac/Defines (= 2.1.4)
-  - "GoogleToolboxForMac/NSData+zlib (2.1.4)":
-    - GoogleToolboxForMac/Defines (= 2.1.4)
-  - GoogleUtilities/AppDelegateSwizzler (5.3.0):
+  - GoogleUtilities/AppDelegateSwizzler (5.3.6):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
     - GoogleUtilities/Network
-  - GoogleUtilities/Environment (5.3.0)
-  - GoogleUtilities/Logger (5.3.0):
+  - GoogleUtilities/Environment (5.3.6)
+  - GoogleUtilities/Logger (5.3.6):
     - GoogleUtilities/Environment
-  - GoogleUtilities/MethodSwizzler (5.3.0):
+  - GoogleUtilities/MethodSwizzler (5.3.6):
     - GoogleUtilities/Logger
-  - GoogleUtilities/Network (5.3.0):
+  - GoogleUtilities/Network (5.3.6):
     - GoogleUtilities/Logger
     - "GoogleUtilities/NSData+zlib"
     - GoogleUtilities/Reachability
-  - "GoogleUtilities/NSData+zlib (5.3.0)"
-  - GoogleUtilities/Reachability (5.3.0):
+  - "GoogleUtilities/NSData+zlib (5.3.6)"
+  - GoogleUtilities/Reachability (5.3.6):
     - GoogleUtilities/Logger
-  - GoogleUtilities/UserDefaults (5.3.0):
+  - GoogleUtilities/UserDefaults (5.3.6):
     - GoogleUtilities/Logger
-  - MJAnalyse (0.1.7):
+  - MJAnalyse (0.1.8):
     - Adjust
     - FBSDKCoreKit
     - ModuleCapability
@@ -84,12 +70,11 @@ PODS:
     - AFNetworking/NSURLSession (~> 3)
     - ModuleCapability (~> 0.1)
   - ModuleCapability (0.1.10)
-  - nanopb (0.3.8):
-    - nanopb/decode (= 0.3.8)
-    - nanopb/encode (= 0.3.8)
-  - nanopb/decode (0.3.8)
-  - nanopb/encode (0.3.8)
-  - Protobuf (3.6.1)
+  - nanopb (0.3.901):
+    - nanopb/decode (= 0.3.901)
+    - nanopb/encode (= 0.3.901)
+  - nanopb/decode (0.3.901)
+  - nanopb/encode (0.3.901)
   - WebInterface (0.1.10):
     - ActionProtocol (~> 0.1)
     - MJWebService (~> 0.1)
@@ -101,10 +86,8 @@ PODS:
     - ModuleCapability (~> 0.1)
 
 DEPENDENCIES:
-  - Adjust
   - FBSDKCoreKit
   - Firebase/Core
-  - Firebase/Crash
   - MJAnalyse (from `../`)
   - ModuleCapability
   - WebInterface
@@ -123,13 +106,10 @@ SPEC REPOS:
     - Firebase
     - FirebaseAnalytics
     - FirebaseCore
-    - FirebaseCrash
     - FirebaseInstanceID
     - GoogleAppMeasurement
-    - GoogleToolboxForMac
     - GoogleUtilities
     - nanopb
-    - Protobuf
 
 EXTERNAL SOURCES:
   MJAnalyse:
@@ -137,25 +117,22 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   ActionProtocol: 2331f4c31d5be0786c248920fceece0234cfe07f
-  Adjust: 30d2cf13dad1a8ba08cf5082d312a26b21da3f29
+  Adjust: b1f2b0e0b426fa991d69ed7fc9de806cf6dff5a6
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   FBSDKCoreKit: fe5f3474499a81963e11e3f3a5c753d0a95ca2b4
-  Firebase: 383fa29aca93e371cab776b48a5c66544d3c2003
-  FirebaseAnalytics: 831f1f127f4a75698e9875a87bf7e2668730d953
-  FirebaseCore: 2a84b6b325792a4319ef71ee18819dcba08d2fd7
-  FirebaseCrash: fd373fbf5f9d1e235a984f2c7e446a5f26b968e8
-  FirebaseInstanceID: 78ba376fcd5b94c001f9999b2cbd3d1f1e56e78d
-  GoogleAppMeasurement: 2b3a023a61239c8d002e6e4fcf4abce8eddce0e0
-  GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
-  GoogleUtilities: 760ccb53b7c7f40f9c02d8c241f76f841a7a6162
-  MJAnalyse: 1e81e0b42a7ac6c458631d5596946bdf68028c49
+  Firebase: 8bb9268bff82374f2cbaaabb143e725743c316ae
+  FirebaseAnalytics: c06f9d70577d79074214700a71fd5d39de5550fb
+  FirebaseCore: 35747502d9e8c6ee217385ad04446c7c2aaf9c5c
+  FirebaseInstanceID: e2fa4cb35ef5558c200f7f0ad8a53e212215f93e
+  GoogleAppMeasurement: 98b71f5e04142793729a5ef23e5b96651ff4b70f
+  GoogleUtilities: 95996bea7c7d9b8fb811b7507669a4a8762f80c7
+  MJAnalyse: 30a3901721c53fb1696bfed50a24ac003dc68925
   MJWebService: 211d40d43d10a23cda9aeab86c42fcacbd5241aa
   ModuleCapability: 458b13fd20e195060b9f55451da78294e39da8f0
-  nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
-  Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
+  nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   WebInterface: d70d88dc68e130f038a1e50aecd0a0e9c2843205
 
-PODFILE CHECKSUM: 6492870d60dd0635ecd2d0605102666ea5e7f826
+PODFILE CHECKSUM: 83a903cb79842b5c754c80a59a3b395539fd5c9a
 
 COCOAPODS: 1.5.3

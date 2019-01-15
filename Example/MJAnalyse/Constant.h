@@ -7,12 +7,12 @@
 //
 
 
-/// Adjust App token
-#define AdjustAppToken          @"AdjustAppToken"
-/// 加入购物车token
-#define AdjustAddedToCartEvent  @"AdjustAddedToCartEvent"
-/// 购买token
-#define AdjustRevenueEvent      @"AdjustRevenueEvent"
-/// 试用转付费token
-#define AdjustTrailToPayEvent   @"AdjustTrailToPayEvent"
+///// Adjust App token
+//#define AdjustAppToken          @"AdjustAppToken"
+///// 加入购物车token
+//#define AdjustAddedToCartEvent  @"AdjustAddedToCartEvent"
+///// 购买token
+//#define AdjustRevenueEvent      @"AdjustRevenueEvent"
+///// 试用转付费token
+//#define AdjustTrailToPayEvent   @"AdjustTrailToPayEvent"
 

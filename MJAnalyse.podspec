@@ -21,6 +21,6 @@ Pod::Spec.new do |s|
     
     s.dependency 'ModuleCapability'
     s.dependency 'FBSDKCoreKit'
-    s.dependency 'Adjust'
+    s.dependency 'Firebase/Core'
     
 end

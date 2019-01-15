@@ -11,7 +11,9 @@
 
 #import <iAd/iAd.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
-#import <Adjust/Adjust.h>
+
+#import <Firebase/Firebase.h>
+#import <FirebaseAnalytics/FirebaseAnalytics/FIRAnalytics.h>
 
 #ifdef MODULE_WEB_INTERFACE
 #import <WebInterface/WebInterface.h>
@@ -37,38 +39,26 @@
     
     [self facebookSDKApplication:application options:launchOptions];
     [self iAdLaunching];
-    [self adjustLaunching];
-
+    [self firebaseConfig];
 }
 
 
-/// 记录内购相关的统计
+/// 记录内购相关的统计 推荐使用
 + (void)analysePurchaseWithStatus:(MJAnalysePurchaseStatus)status
-                        productId:(NSString *)productId {
-    
+                        productId:(NSString *)productId
+                            price:(double)price {
+
     [self analysePurchaseWithStatus:status
                           productId:productId
                            currency:@""
-                              price:0];
+                              price:price];
 }
 
-/// 记录内购相关的统计
-+ (void)analysePurchaseWithStatus:(MJAnalysePurchaseStatus)status
-                        productId:(NSString *)productId
-                         currency:(NSString *)currency
-                            price:(double)price {
-    if (status == MJAnalysePurchaseAddToCart) {
-        /// 加入购物车
-        [self addedToCartWithProductId:productId currency:currency valueToSum:price];
-    }
-    else if (status == MJAnalysePurchaseSucceed) {
-        /// 成功
-        [self purchaseWithProductId:productId currency:currency valueToSum:price];
-    }
-    else if (status == MJAnalysePurchaseInitiatedCheckout) {
-        /// 开始结账
-        [self trialToPayWithProductId:productId currency:currency valueToSum:price];
-    }
+
+/// 统计事件 会统计到Facebook Firebase
++ (void)logEvent:(NSString *)event parameters:(NSDictionary *)parameters {
+    [self facebookLogEvent:event parameters:parameters];
+    [self firebaseLogEvent:event parameters:parameters];
 }
 
 #pragma mark- 归因API
@@ -100,13 +90,12 @@
                     BOOL diff = ![groupId isEqualToString:lastGroupId];
                     if (noLastGroup || diff) {
                         triggerEventStr(@"keyword_install_count", keyword);
+                        [self logEvent:@"keyword_install_count" parameters:dict];
                         [[NSUserDefaults standardUserDefaults] setObject:groupId forKey:kLastSearchGroupId];
                         [[NSUserDefaults standardUserDefaults] synchronize];
                    
 #ifdef MODULE_WEB_INTERFACE
-#ifndef ForTest
                         [WebInterface startRequest:@"MJAnalyse.iad" describe:@"MJAnalyse.iad" body:attributionDetails completion:nil];
-#endif
 #endif
                     }
                 }
@@ -153,6 +142,29 @@
     
     BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application openURL:url options:options];
     return handled;
+}
+
+
+
+#pragma mark- Firebase
+
++ (void)firebaseConfig {
+    [FIRApp configure];
+}
+
+
++ (void)firebaseLogEvent:(NSString *)event parameters:(NSDictionary *)parameters {
+    [FIRAnalytics logEventWithName:event parameters:parameters];
+}
+
+
+#pragma mark- Facebook private
+
+/// Facebook统计事件
++ (void)facebookLogEvent:(NSString *)event
+              parameters:(NSDictionary *)parameters {
+    
+    [FBSDKAppEvents logEvent:event parameters:parameters];
 }
 
 
@@ -268,57 +280,27 @@
 }
 
 
-#pragma mark- Adjust
-
-/// Adjust 配置
-+ (void)adjustLaunching {
-    
-#ifdef AdjustAppToken
-    
-    NSString *yourAppToken = AdjustAppToken;
-    
-#if defined(DEBUG) || defined(ForTest)
-    ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken environment:ADJEnvironmentSandbox];
-    [adjustConfig setLogLevel:ADJLogLevelVerbose];  // enable all logging
-#else
-    ADJConfig *adjustConfig = [ADJConfig configWithAppToken:yourAppToken environment:ADJEnvironmentProduction];
-#endif
-    [adjustConfig setSendInBackground:YES];
-    [Adjust appDidLaunch:adjustConfig];
-#else
-    LogInfo(@"‼️‼️‼️‼️❌❌❌❌ 如有使用Adjust, 请在 Constant.h 配置 AdJustAppToken");
-#endif
-
-}
-
-/**
- 收入跟踪
- */
-+ (void)adjustSetRevenue:(double)amount
-                currency:(nonnull NSString *)currency {
-    
-#ifdef AdjustRevenueEvent
-    ADJEvent *event = [ADJEvent eventWithEventToken:AdjustRevenueEvent];
-    [event setRevenue:amount currency:currency];
-    [Adjust trackEvent:event];
-#endif
-    
-}
-
-
-/**
- 事件跟踪
- 
- @param eventToken 该事件的token, 每个app可能不同
- */
-+ (void)adjustEventWithEventToken:(NSString *)eventToken {
-    ADJEvent *event = [ADJEvent eventWithEventToken:eventToken];
-    [Adjust trackEvent:event];
-}
-
-
 
 #pragma mark- Private
+
+/// 记录内购相关的统计
++ (void)analysePurchaseWithStatus:(MJAnalysePurchaseStatus)status
+                        productId:(NSString *)productId
+                         currency:(NSString *)currency
+                            price:(double)price {
+    if (status == MJAnalysePurchaseAddToCart) {
+        /// 加入购物车
+        [self addedToCartWithProductId:productId currency:currency valueToSum:price];
+    }
+    else if (status == MJAnalysePurchaseSucceed) {
+        /// 成功
+        [self purchaseWithProductId:productId currency:currency valueToSum:price];
+    }
+    else if (status == MJAnalysePurchaseInitiatedCheckout) {
+        /// 开始结账
+        [self trialToPayWithProductId:productId currency:currency valueToSum:price];
+    }
+}
 
 ///// 购买完成后调用, 内部处理统计
 + (void)purchaseWithProductId:(NSString *)productId
@@ -335,10 +317,6 @@
     /// 归因平台
     [self iAdPurchase];
     
-    /// Adjust平台
-#ifdef AdjustRevenueEvent
-    [self adjustSetRevenue:price currency:currency];
-#endif
 }
 
 
@@ -353,9 +331,6 @@
                           currency:currency
                         valueToSum:price];
     
-#ifdef AdjustAddedToCartEvent
-    [self adjustEventWithEventToken:AdjustAddedToCartEvent];
-#endif
 }
 
 /// 开始结账
@@ -369,9 +344,8 @@
                            currency:currency
                          valueToSum:price];
     
-#ifdef AdjustInitiatedCheckout
-    [self adjustEventWithEventToken:AdjustInitiatedCheckout];
-#endif
 }
+
+
 
 @end
