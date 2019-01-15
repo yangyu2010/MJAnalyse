@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
     s.name             = 'MJAnalyse'
     s.version          = '0.2.0'
-    s.summary          = '整理所有的第三方统计'
+    s.summary          = '集成Facebook, Firebase等第三方统计'
 
     s.homepage         = 'https://github.com/yangyu2010/MJAnalyse'
     s.license          = { :type => 'MIT', :file => 'LICENSE' }
