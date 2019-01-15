@@ -13,7 +13,7 @@ target 'MJAnalyse_Example' do
 #    pod 'UMengAnalytics'
 
 
-    pod 'Firebase/Core'             # Google统计
+#pod 'Firebase/Core'             # Google统计
     #pod 'Firebase/Crash'            # Google统计
 
     

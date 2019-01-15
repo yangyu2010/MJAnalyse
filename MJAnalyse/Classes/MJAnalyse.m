@@ -12,12 +12,18 @@
 #import <iAd/iAd.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 
-#import <Firebase/Firebase.h>
-#import <FirebaseAnalytics/FirebaseAnalytics/FIRAnalytics.h>
-
 #ifdef MODULE_WEB_INTERFACE
 #import <WebInterface/WebInterface.h>
 #endif
+
+#if __has_include(<Firebase/Firebase.h>)
+#import <Firebase/Firebase.h>
+#endif
+
+#if __has_include(<FirebaseAnalytics/FirebaseAnalytics/FIRAnalytics.h>)
+#import <FirebaseAnalytics/FirebaseAnalytics/FIRAnalytics.h>
+#endif
+
 
 #ifdef HEADER_ANALYSE
 #import HEADER_ANALYSE
@@ -149,12 +155,16 @@
 #pragma mark- Firebase
 
 + (void)firebaseConfig {
+#if __has_include(<Firebase/Firebase.h>)
     [FIRApp configure];
+#endif
 }
 
 
 + (void)firebaseLogEvent:(NSString *)event parameters:(NSDictionary *)parameters {
+#if __has_include(<FirebaseAnalytics/FirebaseAnalytics/FIRAnalytics.h>)
     [FIRAnalytics logEventWithName:event parameters:parameters];
+#endif
 }
 
 
