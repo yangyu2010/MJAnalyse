@@ -13,6 +13,9 @@
 //  如果要统计事件 内部会调用Facebook统计 Firebase统计
 //  [MJAnalyse logEvent:parameters:]
 
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+
 /// 记录内购方面的统计需要
 typedef enum : NSUInteger {
     MJAnalysePurchaseAddToCart = 1,         ///< 加入购物车
@@ -23,7 +26,6 @@ typedef enum : NSUInteger {
 } MJAnalysePurchaseStatus;
 
 
-#import <Foundation/Foundation.h>
 
 
 @interface MJAnalyse : NSObject
