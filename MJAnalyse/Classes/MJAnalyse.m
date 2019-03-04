@@ -50,7 +50,7 @@
 
 
 /// 记录内购相关的统计 推荐使用
-+ (void)analysePurchaseWithStatus:(MJAnalysePurchaseStatus)status
++ (void)analysePurchaseWithStatus:(MJAnalyseStatus)status
                         productId:(NSString *)productId
                             price:(double)price {
 
@@ -177,54 +177,55 @@
     [FBSDKAppEvents logEvent:event parameters:parameters];
 }
 
-
 /**
- Facebook统计, "添加到购物车"
- 某个内购有试用时, 才使用该事件记录, 其他内购不使用这个事件
+ Facebook统计, "开始试用"
+ 订阅试用商品成功
  */
-+ (void)facebookAddedToCartEvent:(NSString *)contentData
-                       contentId:(NSString *)contentId
-                     contentType:(NSString *)contentType
-                        currency:(NSString *)currency
-                      valueToSum:(double)price {
-    
-    if (contentData == nil) {
-        contentData = @"";
-    }
-    if (contentId == nil) {
-        contentId = @"";
-    }
-    if (contentType == nil) {
-        contentType = @"";
-    }
-    if (currency == nil) {
-        currency = @"";
-    }
-    
-    NSDictionary *params =
-    @{
-      FBSDKAppEventParameterNameContent : contentData,
-      FBSDKAppEventParameterNameContentID : contentId,
-      FBSDKAppEventParameterNameContentType : contentType,
-      FBSDKAppEventParameterNameCurrency : currency
-      };
-    
-    [FBSDKAppEvents logEvent:FBSDKAppEventNameAddedToCart
-                  valueToSum:price
-                  parameters:params];
++ (void)facebookStartTrialEvent:(NSString *)contentData
+                      contentId:(NSString *)contentId
+                    contentType:(NSString *)contentType
+                       currency:(NSString *)currency
+                     valueToSum:(double)price {
+
+        if (contentData == nil) {
+            contentData = @"";
+        }
+        if (contentId == nil) {
+            contentId = @"";
+        }
+        if (contentType == nil) {
+            contentType = @"";
+        }
+        if (currency == nil) {
+            currency = @"";
+        }
+
+        NSDictionary *params =
+        @{
+          FBSDKAppEventParameterNameContent : contentData,
+          FBSDKAppEventParameterNameContentID : contentId,
+          FBSDKAppEventParameterNameContentType : contentType,
+          FBSDKAppEventParameterNameCurrency : currency
+          };
+
+        [FBSDKAppEvents logEvent:FBSDKAppEventNameStartTrial
+                      valueToSum:price
+                      parameters:params];
+
 }
+
 
 
 /**
  Facebook统计, "购买"
- 该事件记录购买消耗性内购, 没有试用的自动订阅等, 和知道某个试用转成付费后, 用该事件记录
+ 订阅非试用商品或者试用商品试用期过后已正常扣款
  */
 + (void)facebookPurchaseEvent:(NSString *)contentData
                     contentId:(NSString *)contentId
                   contentType:(NSString *)contentType
                      currency:(NSString *)currency
                    valueToSum:(double)price {
-    
+
     if (contentData == nil) {
         contentData = @"";
     }
@@ -237,7 +238,7 @@
     if (currency == nil) {
         currency = @"";
     }
-    
+
     NSDictionary *params =
     @{
       FBSDKAppEventParameterNameContent : contentData,
@@ -245,7 +246,8 @@
       FBSDKAppEventParameterNameContentType : contentType,
       FBSDKAppEventParameterNameCurrency : currency
       };
-    
+
+//    FBSDKAppEventNamePurchased
     [FBSDKAppEvents logPurchase:price
                        currency:currency
                      parameters:params];
@@ -253,16 +255,16 @@
 
 
 /**
- Facebook统计, "开始结账" 事件
+ Facebook统计, "发起结账" 事件
  FBSDKAppEventNameInitiatedCheckout
- 某个试用转成付费后, 用该事件记录
+ 点击订阅按钮, 用该事件记录
  */
 + (void)facebookInitiatedCheckout:(NSString *)contentData
                         contentId:(NSString *)contentId
                       contentType:(NSString *)contentType
                          currency:(NSString *)currency
                        valueToSum:(double)price {
-    
+
     if (contentData == nil) {
         contentData = @"";
     }
@@ -275,7 +277,7 @@
     if (currency == nil) {
         currency = @"";
     }
-    
+
     NSDictionary *params =
     @{
       FBSDKAppEventParameterNameContent : contentData,
@@ -283,36 +285,117 @@
       FBSDKAppEventParameterNameContentType : contentType,
       FBSDKAppEventParameterNameCurrency : currency
       };
-    
+
     [FBSDKAppEvents logEvent:FBSDKAppEventNameInitiatedCheckout
                   valueToSum:price
                   parameters:params];
 }
 
+/**
+
+ */
++ (void)facebookSubscribeEvent:(NSString *)contentData
+                        contentId:(NSString *)contentId
+                      contentType:(NSString *)contentType
+                         currency:(NSString *)currency
+                       valueToSum:(double)price {
+
+    if (contentData == nil) {
+        contentData = @"";
+    }
+    if (contentId == nil) {
+        contentId = @"";
+    }
+    if (contentType == nil) {
+        contentType = @"";
+    }
+    if (currency == nil) {
+        currency = @"";
+    }
+
+    NSDictionary *params =
+    @{
+      FBSDKAppEventParameterNameContent : contentData,
+      FBSDKAppEventParameterNameContentID : contentId,
+      FBSDKAppEventParameterNameContentType : contentType,
+      FBSDKAppEventParameterNameCurrency : currency
+      };
+
+    [FBSDKAppEvents logEvent:FBSDKAppEventNameSubscribe
+                  valueToSum:price
+                  parameters:params];
+}
 
 
 #pragma mark- Private
 
 /// 记录内购相关的统计
-+ (void)analysePurchaseWithStatus:(MJAnalysePurchaseStatus)status
++ (void)analysePurchaseWithStatus:(MJAnalyseStatus)status
                         productId:(NSString *)productId
                          currency:(NSString *)currency
                             price:(double)price {
-    if (status == MJAnalysePurchaseAddToCart) {
-        /// 加入购物车
-        [self addedToCartWithProductId:productId currency:currency valueToSum:price];
+    
+    if (status == MJAnalyseInitiatedCheckout) {
+        // 发起结账
+        [self initiatedCheckoutWithProductId:productId currency:currency valueToSum:price];
     }
-    else if (status == MJAnalysePurchaseSucceed) {
-        /// 成功
+    else if (status == MJAnalyseStartTrial) {
+        // 开始试用
+        [self startTrialWithProductId:productId currency:currency valueToSum:price];
+    }
+    else if (status == MJAnalyseSubscribe) {
+        // 订阅
+        [self subscribeWithProductId:productId currency:currency valueToSum:price];
+    }
+    else if (status == MJAnalysePurchased) {
+        // 购买
         [self purchaseWithProductId:productId currency:currency valueToSum:price];
-    }
-    else if (status == MJAnalysePurchaseInitiatedCheckout) {
-        /// 开始结账
-        [self trialToPayWithProductId:productId currency:currency valueToSum:price];
     }
 }
 
-///// 购买完成后调用, 内部处理统计
+
+
+
+/// 发起结账
++ (void)initiatedCheckoutWithProductId:(NSString *)productId
+                              currency:(NSString *)currency
+                            valueToSum:(double)price {
+    
+    [self facebookInitiatedCheckout:@""
+                          contentId:productId
+                        contentType:@""
+                           currency:currency
+                         valueToSum:price];
+    
+}
+
+/// 开始试用
++ (void)startTrialWithProductId:(NSString *)productId
+                       currency:(NSString *)currency
+                     valueToSum:(double)price {
+    
+    [self facebookStartTrialEvent:@""
+                        contentId:productId
+                      contentType:@""
+                         currency:currency
+                       valueToSum:price];
+    
+}
+
+/// 订阅
++ (void)subscribeWithProductId:(NSString *)productId
+                      currency:(NSString *)currency
+                    valueToSum:(double)price {
+
+    [self facebookSubscribeEvent:@""
+                        contentId:productId
+                      contentType:@""
+                         currency:currency
+                       valueToSum:price];
+    
+}
+
+/// 购买
 + (void)purchaseWithProductId:(NSString *)productId
                      currency:(NSString *)currency
                    valueToSum:(double)price {
@@ -326,36 +409,7 @@
     
     /// 归因平台
     [self iAdPurchase];
-    
 }
-
-
-/// 点击购买按钮事件(加入购物车)
-+ (void)addedToCartWithProductId:(NSString *)productId
-                        currency:(NSString *)currency
-                      valueToSum:(double)price {
-    
-    [self facebookAddedToCartEvent:@""
-                         contentId:productId
-                       contentType:@""
-                          currency:currency
-                        valueToSum:price];
-    
-}
-
-/// 开始结账
-+ (void)trialToPayWithProductId:(NSString *)productId
-                       currency:(NSString *)currency
-                     valueToSum:(double)price {
-    
-    [self facebookInitiatedCheckout:@""
-                          contentId:productId
-                        contentType:@""
-                           currency:currency
-                         valueToSum:price];
-    
-}
-
 
 
 @end

@@ -7,8 +7,15 @@
 
 //  在 didFinishLaunchingWithOptions 中 调用[MJAnalyse configWithApplication:options:]方法
 
-//  如要统计内购 调用下面其中一个
+//  如要统计内购 调用下面方法
 //  [MJAnalyse analysePurchaseWithStatus:productId:price:] 推荐使用
+/**
+    点击订阅按钮: EVENT_NAME_INITIATED_CHECKOUT [:发起结账]
+    订阅试用商品成功: EVENT_NAME_START_TRIAL [:开始试用]
+    订阅非试用商品或者试用商品试用期过后已正常扣款: EVENT_NAME_SUBSCRIBE [:订阅]
+    购买成功，不管是试用成功、订阅成功或者续订成功: EVENT_NAME_PURCHASED [:购买]
+ */
+
 
 //  如果要统计事件 内部会调用Facebook统计 Firebase统计
 //  [MJAnalyse logEvent:parameters:]
@@ -18,12 +25,11 @@
 
 /// 记录内购方面的统计需要
 typedef enum : NSUInteger {
-    MJAnalysePurchaseAddToCart = 1,         ///< 加入购物车
-    MJAnalysePurchaseSucceed,               ///< 内购成功
-    MJAnalysePurchaseInitiatedCheckout,     ///< 开始结账
-    
-    MJAnalysePurchaseTrialToPay,            ///< 内购从试用转为付费状态(目前没有用到)
-} MJAnalysePurchaseStatus;
+    MJAnalyseInitiatedCheckout,     ///< 发起结账
+    MJAnalyseStartTrial,            ///< 开始试用
+    MJAnalyseSubscribe,             ///< 订阅
+    MJAnalysePurchased,             ///< 购买
+} MJAnalyseStatus;
 
 
 
@@ -37,19 +43,13 @@ typedef enum : NSUInteger {
                       options:(NSDictionary *)launchOptions;;
 
 
-/// 记录内购相关的统计 推荐使用
-+ (void)analysePurchaseWithStatus:(MJAnalysePurchaseStatus)status
+/// 记录内购相关的统计
++ (void)analysePurchaseWithStatus:(MJAnalyseStatus)status
                         productId:(NSString *)productId
                             price:(double)price;
 
 /// 统计事件 会统计到Facebook Firebase
 + (void)logEvent:(NSString *)event parameters:(NSDictionary *)parameters;
-
-
-
-/// 记录内购相关的统计 推荐使用上面的
-+ (void)analysePurchaseWithStatus:(MJAnalysePurchaseStatus)status
-                        productId:(NSString *)productId;
 
 
 #pragma mark- 归因API
