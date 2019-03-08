@@ -15,7 +15,7 @@ PODS:
   - Bolts/Tasks (1.9.0)
   - FBSDKCoreKit (4.39.1):
     - Bolts (~> 1.9)
-  - MJAnalyse (0.2.1):
+  - MJAnalyse (0.2.2):
     - FBSDKCoreKit
     - ModuleCapability
   - MJWebService (0.1.27):
@@ -58,11 +58,11 @@ SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   FBSDKCoreKit: f442aa96179cc9b382bb4abeb7e340a47cca8f91
-  MJAnalyse: 1f7309169732b96fe8ada49ffa8c7ee3f7c62cca
+  MJAnalyse: ea365d70c64da315242e9a6a2a4ec233e7861646
   MJWebService: a8dafe06d9a5021d54be9eefe850a0b72b09803e
   ModuleCapability: 581ed9839cdaeebc7bb9351f8e00fdbe58773129
   WebInterface: 59307dd15b4cae5927b852193a281972ca7a78db
 
-PODFILE CHECKSUM: 2abe4abe1e0a0d9118ab3f637ff57acc102f39a4
+PODFILE CHECKSUM: a68162faeac7ba7a1f19460f618792d6a9b779ee
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.1

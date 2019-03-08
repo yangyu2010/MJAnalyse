@@ -44,6 +44,8 @@ MJAnalyse is available under the MIT license. See the LICENSE file for more info
 	    [MJAnalyse analysePurchaseWithStatus:MJAnalyseInitiatedCheckout productId:@"your productId" price:9.9];
 	    [[IAPManager sharedInstance] purchaseItem:@"your productId" completion:^(BOOL isSucceed, id message, id result) {
 	        if (isSucceed == NO) {
+	            // 购买失败记录
+	            [MJAnalyse analysePurchaseWithStatus:MJAnalysePurchasedFailure productId:@"your productId" price:9.9];
 	            return ;
 	        }
 	        // 如果成功后
@@ -58,8 +60,12 @@ MJAnalyse is available under the MIT license. See the LICENSE file for more info
 	            // 订阅非试用商品或者试用商品试用期过后已正常扣款 统计事件是 订阅
 	            [MJAnalyse analysePurchaseWithStatus:MJAnalyseSubscribe productId:@"your productId" price:9.9];
 	        }
-	    }];
-	    
+	    }];		
+		
+		
+
+		
+
 3. 统计事件
 
 		/// 统计事件 会统计到Facebook Firebase

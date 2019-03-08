@@ -54,10 +54,18 @@
                         productId:(NSString *)productId
                             price:(double)price {
 
+    if (productId.length == 0) {
+        return ;
+    }
+    
     [self analysePurchaseWithStatus:status
                           productId:productId
                            currency:@""
                               price:price];
+    
+    [self logEventPurchaseWithStatus:status
+                           productId:productId
+                               price:price];
 }
 
 
@@ -328,6 +336,40 @@
 
 
 #pragma mark- Private
+
+/// 手动打点记录内购相关
++ (void)logEventPurchaseWithStatus:(MJAnalyseStatus)status
+                         productId:(NSString *)productId
+                             price:(double)price {
+    
+    NSString *logEvent = nil;
+    switch (status) {
+        case MJAnalyseInitiatedCheckout:
+            logEvent = @"Checkout";
+            break;
+        case MJAnalyseStartTrial:
+            logEvent = @"StartTrial";
+            break;
+        case MJAnalyseSubscribe:
+            logEvent = @"Subscribe";
+            break;
+        case MJAnalysePurchased:
+            logEvent = @"Purchased";
+            break;
+        case MJAnalysePurchasedFailure:
+            logEvent = @"PurchasedFailure";
+            break;
+        default:
+            break;
+    }
+    
+    logEvent = [[productId componentsSeparatedByString:@"."].lastObject stringByAppendingFormat:@"_%@", logEvent];
+    NSDictionary *parameters = @{
+                                 @"price": [NSNumber numberWithDouble:price],
+                                 };
+    
+    [self logEvent:logEvent parameters:parameters];
+}
 
 /// 记录内购相关的统计
 + (void)analysePurchaseWithStatus:(MJAnalyseStatus)status

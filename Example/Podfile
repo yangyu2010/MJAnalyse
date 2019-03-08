@@ -35,7 +35,7 @@ post_install do |installer_representation|
     the_gcc_config = a_gcc_config.split("COCOAPODS=1 ")[1]
     
     the_build_setting = {
-        'GCC_PREPROCESSOR_DEFINITIONS' => the_gcc_config + ' MODULE_USER_CONSTANT',
+        'GCC_PREPROCESSOR_DEFINITIONS' => the_gcc_config,
         'HEADER_SEARCH_PATHS' => "\"$(PROJECT_DIR)/../Public\""
     }
     
@@ -48,7 +48,7 @@ post_install do |installer_representation|
         
         # 重新保存每个pod target
         path = target.xcconfig_path
-        xcconfig_gen = Generator::XCConfig::PodXCConfig.new(target)
+        xcconfig_gen = target.build_settings
         xcconfig = xcconfig_gen.generate
         xcconfig.merge!(the_build_setting)
         xcconfig.save_as(path)
@@ -56,3 +56,4 @@ post_install do |installer_representation|
     end
     
 end
+

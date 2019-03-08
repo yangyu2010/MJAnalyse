@@ -10,10 +10,15 @@
 //  如要统计内购 调用下面方法
 //  [MJAnalyse analysePurchaseWithStatus:productId:price:] 推荐使用
 /**
-    点击订阅按钮: EVENT_NAME_INITIATED_CHECKOUT [:发起结账]
-    订阅试用商品成功: EVENT_NAME_START_TRIAL [:开始试用]
-    订阅非试用商品或者试用商品试用期过后已正常扣款: EVENT_NAME_SUBSCRIBE [:订阅]
-    购买成功，不管是试用成功、订阅成功或者续订成功: EVENT_NAME_PURCHASED [:购买]
+    点击订阅按钮: EVENT_NAME_INITIATED_CHECKOUT [:发起结账] (对应自定义事件Key "Checkout")
+    订阅试用商品成功: EVENT_NAME_START_TRIAL [:开始试用] (对应自定义事件Key "StartTrial")
+    订阅非试用商品或者试用商品试用期过后已正常扣款: EVENT_NAME_SUBSCRIBE [:订阅] (对应自定义事件Key "Subscribe")
+    购买成功，不管是试用成功、订阅成功或者续订成功: EVENT_NAME_PURCHASED [:购买] (对应自定义事件Key "Purchased")
+    购买失败 (对应自定义事件Key "PurchasedFailure")
+ 
+    内购统计后 自动调用手动打点记录内购producId和对应的状态
+    Key的格式是 : 去除bundle id的producId + "_" + 内购状态的字符串
+    例如: vip_OneNumber_Purchased
  */
 
 
@@ -29,8 +34,8 @@ typedef enum : NSUInteger {
     MJAnalyseStartTrial,            ///< 开始试用
     MJAnalyseSubscribe,             ///< 订阅
     MJAnalysePurchased,             ///< 购买
+    MJAnalysePurchasedFailure,      ///< 购买失败
 } MJAnalyseStatus;
-
 
 
 
@@ -47,6 +52,7 @@ typedef enum : NSUInteger {
 + (void)analysePurchaseWithStatus:(MJAnalyseStatus)status
                         productId:(NSString *)productId
                             price:(double)price;
+
 
 /// 统计事件 会统计到Facebook Firebase
 + (void)logEvent:(NSString *)event parameters:(NSDictionary *)parameters;

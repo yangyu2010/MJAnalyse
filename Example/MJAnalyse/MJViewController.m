@@ -19,8 +19,17 @@
 {
     [super viewDidLoad];
 
+//    [MJAnalyse analysePurchaseWithStatus:MJAnalysePurchased productId:@"com.arescrowd.InstaCaller.vip_OneNumber" price:0.99];
 
+    [MJAnalyse analysePurchaseWithStatus:MJAnalysePurchasedFailure productId:@"vip_OneNumber" price:0];
 
+    
+//    [MJAnalyse analysePurchaseWithStatus:MJAnalysePurchasedFailure productId:@"" price:0];
+//    [MJAnalyse analysePurchaseWithStatus:MJAnalysePurchasedFailure productId:nil price:0];
+
+    
+    
+    
 }
 
 - (void)didReceiveMemoryWarning
