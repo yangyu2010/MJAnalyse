@@ -35,10 +35,10 @@ MJAnalyse is available under the MIT license. See the LICENSE file for more info
 
 		/// 初始化统计模块, 包括初始化 iad Facebook adjust三个模块
 		+ (void)configWithApplication:(UIApplication *)application
-		                      options:(NSDictionary *)launchOptions;;
+		                      options:(NSDictionary *)launchOptions;
 
 
-2. 统计
+2. 统计内购
 
 		// 点击订阅按钮, 统计事件是 发起结账
 	    [MJAnalyse analysePurchaseWithStatus:MJAnalyseInitiatedCheckout productId:@"your productId" price:9.9];
@@ -59,3 +59,8 @@ MJAnalyse is available under the MIT license. See the LICENSE file for more info
 	            [MJAnalyse analysePurchaseWithStatus:MJAnalyseSubscribe productId:@"your productId" price:9.9];
 	        }
 	    }];
+	    
+3. 统计事件
+
+		/// 统计事件 会统计到Facebook Firebase
+		+ (void)logEvent:(NSString *)event parameters:(NSDictionary *)parameters;
