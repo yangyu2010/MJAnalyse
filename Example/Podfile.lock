@@ -15,13 +15,81 @@ PODS:
   - Bolts/Tasks (1.9.0)
   - FBSDKCoreKit (4.39.1):
     - Bolts (~> 1.9)
-  - MJAnalyse (0.2.2):
+  - Firebase/Core (5.18.0):
+    - Firebase/CoreOnly
+    - FirebaseAnalytics (= 5.7.0)
+  - Firebase/CoreOnly (5.18.0):
+    - FirebaseCore (= 5.3.1)
+  - Firebase/Crash (5.18.0):
+    - Firebase/Core
+    - FirebaseCrash (= 3.1.1)
+  - FirebaseAnalytics (5.7.0):
+    - FirebaseCore (~> 5.3)
+    - FirebaseInstanceID (~> 3.6)
+    - GoogleAppMeasurement (= 5.7.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 5.2)
+    - GoogleUtilities/MethodSwizzler (~> 5.2)
+    - GoogleUtilities/Network (~> 5.2)
+    - "GoogleUtilities/NSData+zlib (~> 5.2)"
+    - nanopb (~> 0.3)
+  - FirebaseCore (5.3.1):
+    - GoogleUtilities/Logger (~> 5.2)
+  - FirebaseCrash (3.1.1):
+    - FirebaseAnalytics (~> 5.1)
+    - FirebaseInstanceID (~> 3.2)
+    - GoogleToolboxForMac/Logger (~> 2.1)
+    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+    - Protobuf (~> 3.5)
+  - FirebaseInstanceID (3.7.0):
+    - FirebaseCore (~> 5.2)
+    - GoogleUtilities/Environment (~> 5.2)
+    - GoogleUtilities/UserDefaults (~> 5.2)
+  - GoogleAppMeasurement (5.7.0):
+    - GoogleUtilities/AppDelegateSwizzler (~> 5.2)
+    - GoogleUtilities/MethodSwizzler (~> 5.2)
+    - GoogleUtilities/Network (~> 5.2)
+    - "GoogleUtilities/NSData+zlib (~> 5.2)"
+    - nanopb (~> 0.3)
+  - GoogleToolboxForMac/Defines (2.2.0)
+  - GoogleToolboxForMac/Logger (2.2.0):
+    - GoogleToolboxForMac/Defines (= 2.2.0)
+  - "GoogleToolboxForMac/NSData+zlib (2.2.0)":
+    - GoogleToolboxForMac/Defines (= 2.2.0)
+  - GoogleUtilities/AppDelegateSwizzler (5.3.7):
+    - GoogleUtilities/Environment
+    - GoogleUtilities/Logger
+    - GoogleUtilities/Network
+  - GoogleUtilities/Environment (5.3.7)
+  - GoogleUtilities/Logger (5.3.7):
+    - GoogleUtilities/Environment
+  - GoogleUtilities/MethodSwizzler (5.3.7):
+    - GoogleUtilities/Logger
+  - GoogleUtilities/Network (5.3.7):
+    - GoogleUtilities/Logger
+    - "GoogleUtilities/NSData+zlib"
+    - GoogleUtilities/Reachability
+  - "GoogleUtilities/NSData+zlib (5.3.7)"
+  - GoogleUtilities/Reachability (5.3.7):
+    - GoogleUtilities/Logger
+  - GoogleUtilities/UserDefaults (5.3.7):
+    - GoogleUtilities/Logger
+  - MJAnalyse (0.2.3):
     - FBSDKCoreKit
+    - MJKeyManager
     - ModuleCapability
+  - MJKeyManager (0.1.3):
+    - ModuleCapability (~> 0.1.2)
   - MJWebService (0.1.27):
     - AFNetworking/NSURLSession (~> 3)
     - ModuleCapability (~> 0.1)
   - ModuleCapability (0.1.11)
+  - nanopb (0.3.901):
+    - nanopb/decode (= 0.3.901)
+    - nanopb/encode (= 0.3.901)
+  - nanopb/decode (0.3.901)
+  - nanopb/encode (0.3.901)
+  - Protobuf (3.7.0)
+  - UMengAnalytics (4.2.4)
   - WebInterface (0.1.17):
     - ActionProtocol (~> 0.1)
     - MJWebService (~> 0.1)
@@ -34,13 +102,18 @@ PODS:
 
 DEPENDENCIES:
   - FBSDKCoreKit
+  - Firebase/Core
+  - Firebase/Crash
   - MJAnalyse (from `../`)
+  - MJKeyManager
   - ModuleCapability
+  - UMengAnalytics
   - WebInterface
 
 SPEC REPOS:
   "git@git.musjoy.com:PodSpecs.git":
     - ActionProtocol
+    - MJKeyManager
     - MJWebService
     - ModuleCapability
     - WebInterface
@@ -48,6 +121,17 @@ SPEC REPOS:
     - AFNetworking
     - Bolts
     - FBSDKCoreKit
+    - Firebase
+    - FirebaseAnalytics
+    - FirebaseCore
+    - FirebaseCrash
+    - FirebaseInstanceID
+    - GoogleAppMeasurement
+    - GoogleToolboxForMac
+    - GoogleUtilities
+    - nanopb
+    - Protobuf
+    - UMengAnalytics
 
 EXTERNAL SOURCES:
   MJAnalyse:
@@ -58,11 +142,23 @@ SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   FBSDKCoreKit: f442aa96179cc9b382bb4abeb7e340a47cca8f91
-  MJAnalyse: ea365d70c64da315242e9a6a2a4ec233e7861646
+  Firebase: 02f3281965c075426141a0ce1277e9de6649cab9
+  FirebaseAnalytics: 23851fe602c872130a2c5c55040b302120346cc2
+  FirebaseCore: 52f851b30e11360f1e67cf04b1edfebf0a47a2d3
+  FirebaseCrash: 011365f2c0dfac64315109103ed350bacfcdc03f
+  FirebaseInstanceID: bd6fc5a258884e206fd5c474ebe4f5b00e21770e
+  GoogleAppMeasurement: 6cf307834da065863f9faf4c0de0a936d81dd832
+  GoogleToolboxForMac: ff31605b7d66400dcec09bed5861689aebadda4d
+  GoogleUtilities: 111a012f4c3a29c9e7c954c082fafd6ee3c999c0
+  MJAnalyse: 092456f26efaf5089b6ec079e355a098bdb8e4dc
+  MJKeyManager: 74a827f30f020426c222070388650fa5ce7a94d9
   MJWebService: a8dafe06d9a5021d54be9eefe850a0b72b09803e
   ModuleCapability: 581ed9839cdaeebc7bb9351f8e00fdbe58773129
+  nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
+  Protobuf: 7a877b7f3e5964e3fce995e2eb323dbc6831bb5a
+  UMengAnalytics: ef8d45f94c0e5771dc364cf6a5731d9d3b101da2
   WebInterface: 59307dd15b4cae5927b852193a281972ca7a78db
 
-PODFILE CHECKSUM: a68162faeac7ba7a1f19460f618792d6a9b779ee
+PODFILE CHECKSUM: df3e381d0a4a3d7afdd70b4056a53f8d754f9110
 
 COCOAPODS: 1.6.1

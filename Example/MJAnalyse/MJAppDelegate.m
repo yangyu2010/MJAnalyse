@@ -18,7 +18,9 @@
     NSLog(@"NSHomeDirectory__ %@", NSHomeDirectory());
     
     [MJAnalyse configWithApplication:application options:launchOptions];
-
+    
+    
+    
     return YES;
 }
 

@@ -7,26 +7,25 @@
 
 #import "MJAnalyse.h"
 #import <ModuleCapability/ModuleCapability.h>
-#import <StoreKit/StoreKit.h>
-
 #import <iAd/iAd.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <MJKeyManager/MJKeyManager.h>
 
 #ifdef MODULE_WEB_INTERFACE
 #import <WebInterface/WebInterface.h>
 #endif
 
+#if __has_include(<UMMobClick/MobClick.h>)
+#define ANALYSE_UMENG_ENABLE
+#import <UMMobClick/MobClick.h>
+#endif
+#ifndef KEY_UMENG
+#define KEY_UMENG   @"KEY_UMENG"
+#endif
+
 #if __has_include(<Firebase/Firebase.h>)
+#define ANALYSE_FIREBASE_ENABLE
 #import <Firebase/Firebase.h>
-#endif
-
-#if __has_include(<FirebaseAnalytics/FirebaseAnalytics/FIRAnalytics.h>)
-#import <FirebaseAnalytics/FirebaseAnalytics/FIRAnalytics.h>
-#endif
-
-
-#ifdef HEADER_ANALYSE
-#import HEADER_ANALYSE
 #endif
 
 /// 存储归因
@@ -46,6 +45,8 @@
     [self facebookSDKApplication:application options:launchOptions];
     [self iAdLaunching];
     [self firebaseConfig];
+    [self umengConfig];
+
 }
 
 
@@ -73,6 +74,7 @@
 + (void)logEvent:(NSString *)event parameters:(NSDictionary *)parameters {
     [self facebookLogEvent:event parameters:parameters];
     [self firebaseLogEvent:event parameters:parameters];
+    [self umengLogEvent:event parameters:parameters];
 }
 
 #pragma mark- 归因API
@@ -163,18 +165,46 @@
 #pragma mark- Firebase
 
 + (void)firebaseConfig {
-#if __has_include(<Firebase/Firebase.h>)
+#ifdef ANALYSE_FIREBASE_ENABLE
     [FIRApp configure];
 #endif
 }
 
 
 + (void)firebaseLogEvent:(NSString *)event parameters:(NSDictionary *)parameters {
-#if __has_include(<FirebaseAnalytics/FirebaseAnalytics/FIRAnalytics.h>)
+#ifdef ANALYSE_FIREBASE_ENABLE
     [FIRAnalytics logEventWithName:event parameters:parameters];
 #endif
 }
 
+
+#pragma mark- uMeng
+
+/// uMeng初始化
++ (void)umengConfig {
+    
+#ifdef ANALYSE_UMENG_ENABLE
+    
+#ifdef DEBUG
+    [MobClick setLogEnabled:YES];  // 打开友盟sdk调试，注意Release发布时需要注释掉此行,减少io消耗
+#endif
+    [MobClick setAppVersion:XcodeAppVersion]; //参数为NSString * 类型,自定义app版本信息，如果不设置，默认从CFBundleVersion里取
+    [MobClick setCrashReportEnabled:YES];   // 如果不需要捕捉异常，注释掉此行
+    //
+    UMAnalyticsConfig *config = [UMAnalyticsConfig sharedInstance];
+    config.appKey = [MJKeyManager appKeyFor:KEY_UMENG];
+    [MobClick startWithConfigure:config];
+    //   reportPolicy为枚举类型,可以为 REALTIME, BATCH,SENDDAILY,SENDWIFIONLY几种
+    //   channelId 为NSString * 类型，channelId 为nil或@""时,默认会被被当作@"App Store"渠道
+#endif
+}
+
+/// uMeng事件打点
++ (void)umengLogEvent:(NSString *)event parameters:(NSDictionary *)parameters {
+#ifdef ANALYSE_UMENG_ENABLE
+    [MobClick event:event attributes:parameters];
+#endif
+}
 
 #pragma mark- Facebook private
 

@@ -21,9 +21,9 @@
     例如: vip_OneNumber_Purchased
  */
 
-
 //  如果要统计事件 内部会调用Facebook统计 Firebase统计
 //  [MJAnalyse logEvent:parameters:]
+
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
@@ -54,7 +54,7 @@ typedef enum : NSUInteger {
                             price:(double)price;
 
 
-/// 统计事件 会统计到Facebook Firebase
+/// 统计事件 会统计到Facebook Firebase uMeng
 + (void)logEvent:(NSString *)event parameters:(NSDictionary *)parameters;
 
 
