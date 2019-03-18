@@ -15,9 +15,9 @@
 #import <WebInterface/WebInterface.h>
 #endif
 
-#if __has_include(<UMMobClick/MobClick.h>)
+#if __has_include(<UMengAnalytics/UMMobClick/MobClick.h>)
 #define ANALYSE_UMENG_ENABLE
-#import <UMMobClick/MobClick.h>
+#import <UMengAnalytics/UMMobClick/MobClick.h>
 #endif
 #ifndef KEY_UMENG
 #define KEY_UMENG   @"KEY_UMENG"
@@ -29,10 +29,11 @@
 #import <Firebase/Firebase.h>
 #endif
 
-#if __has_include(<FirebaseAnalytics/FirebaseAnalytics.h>)
+#if __has_include(<FirebaseAnalytics/FirebaseAnalytics/FirebaseAnalytics.h>)
 #define ANALYSE_FIREBASE_ANALYTICS_ENABLE
-#import <FirebaseAnalytics/FirebaseAnalytics.h>
+#import <FirebaseAnalytics/FirebaseAnalytics/FirebaseAnalytics.h>
 #endif
+
 
 /// 存储归因
 #define kLastSearchGroupId  @"kLastSearchGroupId"

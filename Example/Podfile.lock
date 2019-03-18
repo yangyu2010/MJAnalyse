@@ -73,7 +73,7 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (5.3.7):
     - GoogleUtilities/Logger
-  - MJAnalyse (0.2.5):
+  - MJAnalyse (0.2.6):
     - FBSDKCoreKit
     - MJKeyManager
     - ModuleCapability
@@ -150,7 +150,7 @@ SPEC CHECKSUMS:
   GoogleAppMeasurement: 6cf307834da065863f9faf4c0de0a936d81dd832
   GoogleToolboxForMac: ff31605b7d66400dcec09bed5861689aebadda4d
   GoogleUtilities: 111a012f4c3a29c9e7c954c082fafd6ee3c999c0
-  MJAnalyse: 1904b4ff6c46dc2a09cc2b2562630c0e5d81dec4
+  MJAnalyse: a3ebfd9de61b0512df98d94df7e532616a5d04fa
   MJKeyManager: 74a827f30f020426c222070388650fa5ce7a94d9
   MJWebService: a8dafe06d9a5021d54be9eefe850a0b72b09803e
   ModuleCapability: 581ed9839cdaeebc7bb9351f8e00fdbe58773129
