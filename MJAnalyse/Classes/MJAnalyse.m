@@ -15,18 +15,23 @@
 #import <WebInterface/WebInterface.h>
 #endif
 
-#if __has_include(<UMengAnalytics/UMMobClick/MobClick.h>)
+#if __has_include(<UMMobClick/MobClick.h>)
 #define ANALYSE_UMENG_ENABLE
-#import <UMengAnalytics/UMMobClick/MobClick.h>
+#import <UMMobClick/MobClick.h>
 #endif
 #ifndef KEY_UMENG
 #define KEY_UMENG   @"KEY_UMENG"
 #endif
 
+
 #if __has_include(<Firebase/Firebase.h>)
 #define ANALYSE_FIREBASE_ENABLE
 #import <Firebase/Firebase.h>
-#import <FirebaseAnalytics/FirebaseAnalytics/FirebaseAnalytics.h>
+#endif
+
+#if __has_include(<FirebaseAnalytics/FirebaseAnalytics.h>)
+#define ANALYSE_FIREBASE_ANALYTICS_ENABLE
+#import <FirebaseAnalytics/FirebaseAnalytics.h>
 #endif
 
 /// 存储归因
@@ -173,7 +178,7 @@
 
 
 + (void)firebaseLogEvent:(NSString *)event parameters:(NSDictionary *)parameters {
-#ifdef ANALYSE_FIREBASE_ENABLE
+#ifdef ANALYSE_FIREBASE_ANALYTICS_ENABLE
     [FIRAnalytics logEventWithName:event parameters:parameters];
 #endif
 }
