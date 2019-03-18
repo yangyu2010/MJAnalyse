@@ -15,9 +15,9 @@
 #import <WebInterface/WebInterface.h>
 #endif
 
-#if __has_include(<UMMobClick/MobClick.h>)
+#if __has_include(<UMengAnalytics/UMMobClick/MobClick.h>)
 #define ANALYSE_UMENG_ENABLE
-#import <UMMobClick/MobClick.h>
+#import <UMengAnalytics/UMMobClick/MobClick.h>
 #endif
 #ifndef KEY_UMENG
 #define KEY_UMENG   @"KEY_UMENG"
@@ -26,6 +26,7 @@
 #if __has_include(<Firebase/Firebase.h>)
 #define ANALYSE_FIREBASE_ENABLE
 #import <Firebase/Firebase.h>
+#import <FirebaseAnalytics/FirebaseAnalytics/FirebaseAnalytics.h>
 #endif
 
 /// 存储归因
