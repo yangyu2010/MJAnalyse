@@ -29,9 +29,9 @@
 #import <Firebase/Firebase.h>
 #endif
 
-#if __has_include(<FirebaseAnalytics/FirebaseAnalytics/FirebaseAnalytics.h>)
+#if __has_include(<FirebaseAnalytics/FirebaseAnalytics/FIRAnalytics.h>)
 #define ANALYSE_FIREBASE_ANALYTICS_ENABLE
-#import <FirebaseAnalytics/FirebaseAnalytics/FirebaseAnalytics.h>
+#import <FirebaseAnalytics/FirebaseAnalytics/FIRAnalytics.h>
 #endif
 
 
@@ -192,9 +192,6 @@
     
 #ifdef ANALYSE_UMENG_ENABLE
     
-#ifdef DEBUG
-    [MobClick setLogEnabled:YES];  // 打开友盟sdk调试，注意Release发布时需要注释掉此行,减少io消耗
-#endif
     [MobClick setAppVersion:XcodeAppVersion]; //参数为NSString * 类型,自定义app版本信息，如果不设置，默认从CFBundleVersion里取
     [MobClick setCrashReportEnabled:YES];   // 如果不需要捕捉异常，注释掉此行
     //

@@ -22,6 +22,7 @@
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		695480FBB6932F98ECD6DBE1 /* libPods-MJAnalyse_Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DA876B532AB592AF2E834F7 /* libPods-MJAnalyse_Example.a */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
+		86465008223F798C000595D8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 86465007223F798C000595D8 /* GoogleService-Info.plist */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -59,6 +60,7 @@
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		86465007223F798C000595D8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		86E3D7B9214B9DA600FA9157 /* Constant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constant.h; sourceTree = "<group>"; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8DA876B532AB592AF2E834F7 /* libPods-MJAnalyse_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MJAnalyse_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -129,6 +131,7 @@
 		6003F593195388D20070C39A /* Example for MJAnalyse */ = {
 			isa = PBXGroup;
 			children = (
+				86465007223F798C000595D8 /* GoogleService-Info.plist */,
 				86E3D7B9214B9DA600FA9157 /* Constant.h */,
 				6003F59C195388D20070C39A /* MJAppDelegate.h */,
 				6003F59D195388D20070C39A /* MJAppDelegate.m */,
@@ -273,6 +276,7 @@
 			files = (
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
 				71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */,
+				86465008223F798C000595D8 /* GoogleService-Info.plist in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
 			);
