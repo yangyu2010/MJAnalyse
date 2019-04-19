@@ -17,10 +17,15 @@ Pod::Spec.new do |s|
     s.source           = { :git => 'https://github.com/yangyu2010/MJAnalyse.git', :tag => "v-#{s.version}" }
     s.ios.deployment_target = '9.0'
 
-    s.source_files = 'MJAnalyse/Classes/**/*'
+    s.subspec 'Analyse' do |ss|
+        s.source_files = 'MJAnalyse/Classes/MJAnalyse.{h, m}'
+        s.dependency 'ModuleCapability'
+        s.dependency 'FBSDKCoreKit'
+        s.dependency 'MJKeyManager'
+    end
     
-    s.dependency 'ModuleCapability'
-    s.dependency 'FBSDKCoreKit'
-    s.dependency 'MJKeyManager'
-
+    s.subspec 'ViewController' do |ss|
+        s.source_files = 'MJAnalyse/Classes/UIViewController+Analyse.{h, m}'
+    end
+    
 end
