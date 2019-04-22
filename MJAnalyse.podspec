@@ -18,14 +18,15 @@ Pod::Spec.new do |s|
     s.ios.deployment_target = '9.0'
 
     s.subspec 'Analyse' do |ss|
-        s.source_files = 'MJAnalyse/Classes/MJAnalyse.{h, m}'
-        s.dependency 'ModuleCapability'
-        s.dependency 'FBSDKCoreKit'
-        s.dependency 'MJKeyManager'
+        ss.source_files = 'MJAnalyse/Classes/MJAnalyse.{h,m}'
+        ss.dependency 'ModuleCapability'
+        ss.dependency 'FBSDKCoreKit'
+        ss.dependency 'MJKeyManager'
     end
     
     s.subspec 'ViewController' do |ss|
-        s.source_files = 'MJAnalyse/Classes/UIViewController+Analyse.{h, m}'
+        ss.source_files = 'MJAnalyse/Classes/UIViewController+Analyse.{h,m}'
+        ss.dependency 'MJAnalyse/Analyse'
     end
     
 end

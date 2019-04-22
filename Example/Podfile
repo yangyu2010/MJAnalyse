@@ -6,8 +6,10 @@ platform :ios, '9.0'
 
 
 target 'MJAnalyse_Example' do
+  
   pod 'MJAnalyse', :path => '../'
 
+  
     pod 'ModuleCapability'
     pod 'MJKeyManager'                  # 获取常用key信息
 

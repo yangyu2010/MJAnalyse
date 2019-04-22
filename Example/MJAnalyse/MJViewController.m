@@ -7,7 +7,9 @@
 //
 
 #import "MJViewController.h"
-#import "MJAnalyse.h"
+//#import "MJAnalyse.h"
+#import <MJAnalyse/MJAnalyse.h>
+
 
 @interface MJViewController ()
 
