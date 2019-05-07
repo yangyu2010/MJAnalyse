@@ -15,9 +15,9 @@
 #import <WebInterface/WebInterface.h>
 #endif
 
-#if __has_include(<UMengAnalytics/UMMobClick/MobClick.h>)
+#if __has_include(<UMMobClick/MobClick.h>)
 #define ANALYSE_UMENG_ENABLE
-#import <UMengAnalytics/UMMobClick/MobClick.h>
+#import <UMMobClick/MobClick.h>
 #endif
 #ifndef KEY_UMENG
 #define KEY_UMENG   @"KEY_UMENG"
@@ -29,9 +29,9 @@
 #import <Firebase/Firebase.h>
 #endif
 
-#if __has_include(<FirebaseAnalytics/FirebaseAnalytics/FIRAnalytics.h>)
+#if __has_include(<FirebaseAnalytics/FIRAnalytics.h>)
 #define ANALYSE_FIREBASE_ANALYTICS_ENABLE
-#import <FirebaseAnalytics/FirebaseAnalytics/FIRAnalytics.h>
+#import <FirebaseAnalytics/FIRAnalytics.h>
 #endif
 
 
