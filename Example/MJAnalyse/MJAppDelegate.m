@@ -9,16 +9,14 @@
 #import "MJAppDelegate.h"
 #import <MJAnalyse.h>
 
-
 @implementation MJAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     
-    NSLog(@"NSHomeDirectory__ %@", NSHomeDirectory());
+    NSLog(@"\nNSHomeDirectory__ %@", NSHomeDirectory());
     
     [MJAnalyse configWithApplication:application options:launchOptions];
-    
     
     
     return YES;
@@ -44,6 +42,9 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    
+    
+    [MJAnalyse applicationDidBecomeActive];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

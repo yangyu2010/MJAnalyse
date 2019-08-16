@@ -35,6 +35,11 @@
 #endif
 
 
+#if __has_include(<MJAnalyse+Networking.h>)
+#define ANALYSE_NETWORKING_ENABLE
+#import <MJAnalyse+Networking.h>
+#endif
+
 /// 存储归因
 #define kLastSearchGroupId  @"kLastSearchGroupId"
 /// 存储归因广告信息本地key
@@ -54,8 +59,27 @@
     [self firebaseConfig];
     [self umengConfig];
 
+#ifdef ANALYSE_NETWORKING_ENABLE
+    [self appInstallAnalyse];
+#endif
+    
 }
 
+/// app变活跃时调用 记录启动用
++ (void)applicationDidBecomeActive {
+    
+#ifdef ANALYSE_NETWORKING_ENABLE
+    [self appLaunchAnalyse];
+#endif
+    
+}
+
+/// 自己服务器的事件记录
++ (void)logEven:(MJAnalyseEventCode)eventCode value:(NSString *)value {
+#ifdef ANALYSE_NETWORKING_ENABLE
+    [self recordAnalyseWith:eventCode recordValue:value];
+#endif
+}
 
 /// 记录内购相关的统计 推荐使用
 + (void)analysePurchaseWithStatus:(MJAnalyseStatus)status

@@ -39,20 +39,38 @@ typedef enum : NSUInteger {
 
 
 
+/// 事件记录
+typedef enum : NSUInteger {
+    MJAnalyseUVLaunchEvent,             ///< 启动App人数
+    MJAnalyseUVHomeEvent,               ///< 到达首页人数
+    MJAnalyseUVPaidEvent,               ///< 付费用户数
+    MJAnalyseHomeEvent,                 ///< 到达首页人次
+    MJAnalysePaymentCreatEvent,         ///< 点击购买人次 购买相关的recordValue传商品ID
+    MJAnalysePaymentSucceedEvent,       ///< 购买成功人次
+    MJAnalysePaymentSucceedTrialEvent,  ///< 购买成功试用人次
+    MJAnalysePaymentFailedEvent,        ///< 购买失败人次
+} MJAnalyseEventCode;
+
+
+
 @interface MJAnalyse : NSObject
 
 #pragma mark- Public
 
 /// 初始化统计模块, 包括初始化 iad Facebook adjust三个模块
 + (void)configWithApplication:(UIApplication *)application
-                      options:(NSDictionary *)launchOptions;;
+                      options:(NSDictionary *)launchOptions;
 
+/// app变活跃时调用 记录启动用
++ (void)applicationDidBecomeActive;
+
+/// 自己服务器的事件记录
++ (void)logEven:(MJAnalyseEventCode)eventCode value:(NSString *)value;
 
 /// 记录内购相关的统计
 + (void)analysePurchaseWithStatus:(MJAnalyseStatus)status
                         productId:(NSString *)productId
                             price:(double)price;
-
 
 /// 统计事件 会统计到Facebook Firebase uMeng
 + (void)logEvent:(NSString *)event parameters:(NSDictionary *)parameters;
