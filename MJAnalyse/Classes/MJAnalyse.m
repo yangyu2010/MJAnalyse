@@ -81,6 +81,14 @@
 #endif
 }
 
+
+///// 自己服务器的事件记录
+//+ (void)logEven:(MJAnalyseEventCode)eventCode value:(NSString *)value {
+//#ifdef ANALYSE_NETWORKING_ENABLE
+//    [self recordAnalyseWith:eventCode recordValue:value];
+//#endif
+//}
+
 /// 记录内购相关的统计 推荐使用
 + (void)analysePurchaseWithStatus:(MJAnalyseStatus)status
                         productId:(NSString *)productId

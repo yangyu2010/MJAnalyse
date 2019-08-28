@@ -21,7 +21,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)recordAnalyseWith:(MJAnalyseEventCode)type
               recordValue:(NSString *)recordValue;
 
-
 @end
 
 NS_ASSUME_NONNULL_END

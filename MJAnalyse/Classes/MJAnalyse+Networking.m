@@ -13,6 +13,29 @@
 #define kMJAnalyseLastLaunchTime        @"analyseLastLaunchTime"
 #define kMJAnalyseLaunchTimeInterval    (12 * 60 * 60)
 
+/// 最后一次推广的app
+#define kAppInstallDeviceInfo   @"AppInstallDeviceInfo"
+/// 首次推广激活需要次数
+#define ANALYTICS_INSTALL_ACTIVE_COUNT 10
+#ifndef SERVER_API_APP_INSTALL_RECORD
+#define SERVER_API_APP_INSTALL_RECORD   @"Analyse.appInstall"
+#endif
+
+/// 到达首页人数
+#define kAnalyseEventUVHome             @"UV_Home"
+/// 到达首页人次
+#define kAnalyseEventHome               @"Home"
+/// 点击购买人次
+#define kAnalyseEventPaymentCreat       @"PaymentCreate"
+/// 购买成功人次
+#define kAnalyseEventPaymentSucceed       @"PaymentSucceed"
+/// 购买成功试用人次
+#define kAnalyseEventPaymentSucceedTrial       @"PaymentSucceedTrial"
+/// 购买成功试用人次
+#define kAnalyseEventPaymentFailed       @"PaymentFailed"
+
+
+
 static NSString *const API_ANALYSE_APPINSTALL = @"Analyse.appInstall";
 static NSString *const API_ANALYSE_APPLAUNCH  = @"Analyse.appLaunch";
 static NSString *const API_ANALYSE_RECORD     = @"Analyse.record";
@@ -24,12 +47,50 @@ static NSString *const API_ANALYSE_RECORD     = @"Analyse.record";
 
 /// 应用安装
 + (void)appInstallAnalyse {
-    NSInteger activeCount = [self getActiveCount];
-    if (activeCount == NSNotFound) {
-        return;
+//    NSInteger activeCount = [self getActiveCount];
+//    if (activeCount == NSNotFound) {
+//        return;
+//    }
+//    [self appInstallNetworkingWith:activeCount];
+
+#ifdef MODULE_WEB_INTERFACE
+    // 没有网络接口模块，可以不调用
+    // 检查deviceUUID和deviceIDFA
+#ifdef MODULE_DEVICE
+    NSString *deviceUUID = [MJDevice deviceUUID];
+#else
+    NSString *deviceUUID = [[UIDevice currentDevice].identifierForVendor UUIDString];
+#endif
+    
+#ifdef MODULE_AD_SUPPORT
+    NSString *deviceIDFA = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+#else
+    NSString *deviceIDFA = @"00000000-0000-0000-0000-000000000000";
+#endif
+    // 获取本地保存的记录
+    NSData *deviceData = keychainDefaultSharedObjectForKey(kAppInstallDeviceInfo);
+    NSInteger *activeCount = 1;
+    if (deviceData) {
+        NSDictionary *deviceInfo = [NSJSONSerialization JSONObjectWithData:deviceData options:NSJSONReadingMutableLeaves error:nil];
+        if ([deviceInfo[@"deviceUUID"] isEqualToString:deviceUUID] && [deviceInfo[@"deviceIDFA"] isEqualToString:deviceIDFA]) {
+            NSInteger curActiveCount = [deviceInfo[@"activeCount"] integerValue];
+            if (curActiveCount >= ANALYTICS_INSTALL_ACTIVE_COUNT) {
+                return;
+            }
+        }
+        activeCount = [deviceInfo[@"activeCount"] integerValue] + 1;
     }
     
-    [self appInstallNetworkingWith:activeCount];
+    NSString *action = SERVER_API_APP_INSTALL_RECORD;
+    NSDictionary *sendData = [NSDictionary dictionaryWithObjectsAndKeys:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"], @"appBundleId", [NSNumber numberWithInteger:activeCount], @"activeCount", nil];
+    [WebInterface startRequest:action describe:@"App install record" body:sendData completion:^(BOOL isSucceed, NSString *message, id data) {
+        if (isSucceed) {
+            NSDictionary *saveData = [NSDictionary dictionaryWithObjectsAndKeys:deviceUUID, @"deviceUUID", deviceIDFA, @"deviceIDFA", [NSNumber numberWithInteger:activeCount], @"activeCount", nil];
+            keychainSetDefaultSharedObject([NSJSONSerialization dataWithJSONObject:sendData options:NSJSONWritingPrettyPrinted error:nil], kAppInstallDeviceInfo);
+        }
+    }];
+#endif
+
 }
 
 /// 应用启动
@@ -37,53 +98,54 @@ static NSString *const API_ANALYSE_RECORD     = @"Analyse.record";
     if ([self checkLastLaunchTime]) {
         [self appLaunchNetworking];
     }
+    
 }
+
 
 /// 事件记录
 + (void)recordAnalyseWith:(MJAnalyseEventCode)type
               recordValue:(NSString *)recordValue {
-    /**
-     MJAnalyseUVLaunchEvent,             ///< 启动App人数
-     MJAnalyseUVHomeEvent,               ///< 到达首页人数
-     MJAnalyseUVPaidEvent,               ///< 付费用户数
-     MJAnalyseHomeEvent,                 ///< 到达首页人次
-     MJAnalysePaymentCreatEvent,         ///< 点击购买人次 购买相关的recordValue传商品ID
-     MJAnalysePaymentSucceedEvent,       ///< 购买成功人次
-     MJAnalysePaymentSucceedTrialEvent,  ///< 购买成功试用人次
-     MJAnalysePaymentFailedEvent,        ///< 购买失败人次
-     */
+
+//    MJAnalyseEventHome,                 ///< 到达首页人次
+//    MJAnalyseEventPaymentCreat,         ///< 点击购买人次 购买相关的recordValue传商品ID
+//    MJAnalyseEventPaymentSucceed,       ///< 购买成功人次
+//    MJAnalyseEventPaymentSucceedTrial,  ///< 购买成功试用人次
+//    MJAnalyseEventPaymentFailed,        ///< 购买失败人次
+//    MJAnalyseEventPaymentIAP            ///< 内购事件人次 IAP_* (完整的商品ID)
+
     
-    NSString *eventCode = nil;
     switch (type) {
-        case MJAnalyseUVLaunchEvent:
-            eventCode = @"UV_Launch";
+        case MJAnalyseEventHome: {
+            [self recordNetworkingWith:@"UV_Home" recordValue:recordValue];
+            [self recordNetworkingWith:@"Home" recordValue:recordValue];
+            }
             break;
-        case MJAnalyseUVHomeEvent:
-            eventCode = @"UV_Home";
+        case MJAnalyseEventPaymentCreat: {
+            [self recordNetworkingWith:@"PaymentCreate" recordValue:recordValue];
+        }
             break;
-        case MJAnalyseUVPaidEvent:
-            eventCode = @"UV_Paid";
+        case MJAnalyseEventPaymentSucceed: {
+            [self recordNetworkingWith:@"PaymentSucceed" recordValue:recordValue];
+        }
             break;
-        case MJAnalyseHomeEvent:
-            eventCode = @"Home";
+        case MJAnalyseEventPaymentSucceedTrial: {
+            [self recordNetworkingWith:@"PaymentSucceedTrial" recordValue:recordValue];
+        }
             break;
-        case MJAnalysePaymentCreatEvent:
-            eventCode = @"PaymentCreate";
+        case MJAnalyseEventPaymentFailed: {
+            [self recordNetworkingWith:@"PaymentFailed" recordValue:recordValue];
+            NSString *eventCode = [NSString stringWithFormat:@"IAP_%@", recordValue];
+            [self recordNetworkingWith:eventCode recordValue:@"1"];
+        }
             break;
-        case MJAnalysePaymentSucceedEvent:
-            eventCode = @"PaymentSucceed";
-            break;
-        case MJAnalysePaymentSucceedTrialEvent:
-            eventCode = @"PaymentSucceedTrial";
-            break;
-        case MJAnalysePaymentFailedEvent:
-            eventCode = @"PaymentFailed";
+        case MJAnalyseEventNonSubscriptionSucceed: {
+            NSString *eventCode = [NSString stringWithFormat:@"IAP_%@", recordValue];
+            [self recordNetworkingWith:eventCode recordValue:@"0"];
+        }
             break;
         default:
             break;
     }
-    
-    [self recordNetworkingWith:eventCode recordValue:recordValue];
 }
 
 

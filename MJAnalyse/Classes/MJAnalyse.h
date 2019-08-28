@@ -38,19 +38,15 @@ typedef enum : NSUInteger {
 } MJAnalyseStatus;
 
 
-
-/// 事件记录
+/// 服务器事件记录
 typedef enum : NSUInteger {
-    MJAnalyseUVLaunchEvent,             ///< 启动App人数
-    MJAnalyseUVHomeEvent,               ///< 到达首页人数
-    MJAnalyseUVPaidEvent,               ///< 付费用户数
-    MJAnalyseHomeEvent,                 ///< 到达首页人次
-    MJAnalysePaymentCreatEvent,         ///< 点击购买人次 购买相关的recordValue传商品ID
-    MJAnalysePaymentSucceedEvent,       ///< 购买成功人次
-    MJAnalysePaymentSucceedTrialEvent,  ///< 购买成功试用人次
-    MJAnalysePaymentFailedEvent,        ///< 购买失败人次
+    MJAnalyseEventHome,                     ///< 到达首页人次
+    MJAnalyseEventPaymentCreat,             ///< 点击购买人次 购买相关的recordValue传商品ID
+    MJAnalyseEventPaymentSucceed,           ///< 购买成功人次
+    MJAnalyseEventPaymentSucceedTrial,      ///< 购买成功试用人次
+    MJAnalyseEventPaymentFailed,            ///< 购买失败人次 会调用IAP_*购买失败
+    MJAnalyseEventNonSubscriptionSucceed    ///< (非订阅类型)付费成功 IAP_* (完整的商品ID)
 } MJAnalyseEventCode;
-
 
 
 @interface MJAnalyse : NSObject
