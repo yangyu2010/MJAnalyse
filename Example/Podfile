@@ -23,6 +23,7 @@ target 'MJAnalyse_Example' do
     pod 'FBSDKCoreKit'
 
     pod 'WebInterface'                  # 基础网络请求类
+    pod 'MJIAPManager'                  # 内购
 
 end
 

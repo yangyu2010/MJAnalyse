@@ -86,6 +86,8 @@ PODS:
     - WebInterface
   - MJAnalyse/ViewController (0.2.11):
     - MJAnalyse/Analyse
+  - MJIAPManager (0.1.44):
+    - ModuleCapability (~> 0.1.2)
   - MJKeyManager (0.1.3):
     - ModuleCapability (~> 0.1.2)
   - MJWebService (0.1.27):
@@ -114,6 +116,7 @@ DEPENDENCIES:
   - Firebase/Core
   - Firebase/Crash
   - MJAnalyse (from `../`)
+  - MJIAPManager
   - MJKeyManager
   - ModuleCapability
   - UMengAnalytics
@@ -122,6 +125,7 @@ DEPENDENCIES:
 SPEC REPOS:
   "git@git.musjoy.com:PodSpecs.git":
     - ActionProtocol
+    - MJIAPManager
     - MJKeyManager
     - MJWebService
     - ModuleCapability
@@ -160,6 +164,7 @@ SPEC CHECKSUMS:
   GoogleToolboxForMac: ff31605b7d66400dcec09bed5861689aebadda4d
   GoogleUtilities: 111a012f4c3a29c9e7c954c082fafd6ee3c999c0
   MJAnalyse: e17a15a2e17b9d280ad55f20aa1492d9d98a189b
+  MJIAPManager: a5c25de29a6cfd89f7f108d9c07865d7cdee7fd3
   MJKeyManager: 74a827f30f020426c222070388650fa5ce7a94d9
   MJWebService: a8dafe06d9a5021d54be9eefe850a0b72b09803e
   ModuleCapability: 581ed9839cdaeebc7bb9351f8e00fdbe58773129
@@ -168,6 +173,6 @@ SPEC CHECKSUMS:
   UMengAnalytics: ef8d45f94c0e5771dc364cf6a5731d9d3b101da2
   WebInterface: 59307dd15b4cae5927b852193a281972ca7a78db
 
-PODFILE CHECKSUM: f845a9336922ece1908cab83ef53a93f31e04050
+PODFILE CHECKSUM: 2e0962cd1c865216614b2f17178b50052deb8834
 
 COCOAPODS: 1.7.5

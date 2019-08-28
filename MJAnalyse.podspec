@@ -32,7 +32,6 @@ Pod::Spec.new do |s|
     s.subspec 'Networking' do |ss|
         ss.source_files = 'MJAnalyse/Classes/MJAnalyse+Networking.{h,m}'
         ss.dependency 'MJAnalyse/Analyse'
-        ss.dependency 'WebInterface'
     end
     
 end

@@ -7,7 +7,16 @@
 //
 
 #import "MJAnalyse+Networking.h"
-#import <WebInterface.h>
+#import <ModuleCapability/ModuleCapability.h>
+#import HEADER_KEYCHAIN
+
+#ifdef MODULE_DEVICE
+#import "MJDevice.h"
+#endif
+
+#ifdef  MODULE_WEB_INTERFACE
+#import <WebInterface/WebInterface.h>
+#endif
 
 #define kMJAnalyseActiveCount           @"analyseActiveCount"
 #define kMJAnalyseLastLaunchTime        @"analyseLastLaunchTime"
@@ -22,17 +31,17 @@
 #endif
 
 /// 到达首页人数
-#define kAnalyseEventUVHome             @"UV_Home"
+#define kAnalyseEventUVHome                 @"UV_Home"
 /// 到达首页人次
-#define kAnalyseEventHome               @"Home"
+#define kAnalyseEventHome                   @"Home"
 /// 点击购买人次
-#define kAnalyseEventPaymentCreat       @"PaymentCreate"
+#define kAnalyseEventPaymentCreat           @"PaymentCreate"
 /// 购买成功人次
-#define kAnalyseEventPaymentSucceed       @"PaymentSucceed"
+#define kAnalyseEventPaymentSucceed         @"PaymentSucceed"
 /// 购买成功试用人次
-#define kAnalyseEventPaymentSucceedTrial       @"PaymentSucceedTrial"
+#define kAnalyseEventPaymentSucceedTrial    @"PaymentSucceedTrial"
 /// 购买成功试用人次
-#define kAnalyseEventPaymentFailed       @"PaymentFailed"
+#define kAnalyseEventPaymentFailed          @"PaymentFailed"
 
 
 
@@ -93,6 +102,7 @@ static NSString *const API_ANALYSE_RECORD     = @"Analyse.record";
 
 }
 
+
 /// 应用启动
 + (void)appLaunchAnalyse {
     if ([self checkLastLaunchTime]) {
@@ -106,41 +116,33 @@ static NSString *const API_ANALYSE_RECORD     = @"Analyse.record";
 + (void)recordAnalyseWith:(MJAnalyseEventCode)type
               recordValue:(NSString *)recordValue {
 
-//    MJAnalyseEventHome,                 ///< 到达首页人次
-//    MJAnalyseEventPaymentCreat,         ///< 点击购买人次 购买相关的recordValue传商品ID
-//    MJAnalyseEventPaymentSucceed,       ///< 购买成功人次
-//    MJAnalyseEventPaymentSucceedTrial,  ///< 购买成功试用人次
-//    MJAnalyseEventPaymentFailed,        ///< 购买失败人次
-//    MJAnalyseEventPaymentIAP            ///< 内购事件人次 IAP_* (完整的商品ID)
-
-    
     switch (type) {
         case MJAnalyseEventHome: {
-            [self recordNetworkingWith:@"UV_Home" recordValue:recordValue];
-            [self recordNetworkingWith:@"Home" recordValue:recordValue];
+            [self recordNetworkingWith:kAnalyseEventUVHome recordValue:recordValue];
+            [self recordNetworkingWith:kAnalyseEventHome recordValue:recordValue];
             }
             break;
         case MJAnalyseEventPaymentCreat: {
-            [self recordNetworkingWith:@"PaymentCreate" recordValue:recordValue];
+            [self recordNetworkingWith:kAnalyseEventPaymentCreat recordValue:recordValue];
         }
             break;
         case MJAnalyseEventPaymentSucceed: {
-            [self recordNetworkingWith:@"PaymentSucceed" recordValue:recordValue];
+            [self recordNetworkingWith:kAnalyseEventPaymentSucceed recordValue:recordValue];
         }
             break;
         case MJAnalyseEventPaymentSucceedTrial: {
-            [self recordNetworkingWith:@"PaymentSucceedTrial" recordValue:recordValue];
+            [self recordNetworkingWith:kAnalyseEventPaymentSucceedTrial recordValue:recordValue];
         }
             break;
         case MJAnalyseEventPaymentFailed: {
-            [self recordNetworkingWith:@"PaymentFailed" recordValue:recordValue];
+            [self recordNetworkingWith:kAnalyseEventPaymentFailed recordValue:recordValue];
             NSString *eventCode = [NSString stringWithFormat:@"IAP_%@", recordValue];
-            [self recordNetworkingWith:eventCode recordValue:@"1"];
+            [self recordNetworkingWith:eventCode recordValue:@"付费失败"];
         }
             break;
         case MJAnalyseEventNonSubscriptionSucceed: {
             NSString *eventCode = [NSString stringWithFormat:@"IAP_%@", recordValue];
-            [self recordNetworkingWith:eventCode recordValue:@"0"];
+            [self recordNetworkingWith:eventCode recordValue:@"付费成功"];
         }
             break;
         default:
@@ -242,9 +244,10 @@ static NSString *_appBundleId = nil;
 + (void)startRequest:(NSString *)action
             describe:(NSString *)describe
                 body:(NSDictionary *)body
-          completion:(ActionCompleteBlock)completion {
-    
+          completion:(void(^)(BOOL isSucceed, NSString *message, id data))completion {
+#ifdef MODULE_WEB_INTERFACE
     [WebInterface startRequest:action describe:describe body:body completion:completion];
+#endif
 }
 
 
