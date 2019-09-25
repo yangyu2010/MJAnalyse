@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// 事件记录
 + (void)recordAnalyseWith:(MJAnalyseEventCode)type
               recordValue:(NSString *)recordValue;
++ (void)recordAnalyseWithStr:(NSString *)eventStr
+                       value:(NSString *)value;
 
 @end
 

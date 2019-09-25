@@ -81,6 +81,12 @@
 #endif
 }
 
++ (void)logEvenStr:(NSString *)eventStr value:(NSString *)value {
+#ifdef ANALYSE_NETWORKING_ENABLE
+    [self recordAnalyseWithStr:eventStr value:value];
+#endif
+}
+
 
 ///// 自己服务器的事件记录
 //+ (void)logEven:(MJAnalyseEventCode)eventCode value:(NSString *)value {

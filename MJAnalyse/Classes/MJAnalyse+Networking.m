@@ -32,6 +32,8 @@
 
 /// 到达首页人数
 #define kAnalyseEventUVHome                 @"UV_Home"
+/// 付费用户数
+#define kAnalyseEventUVPaid                 @"UV_Paid"
 /// 到达首页人次
 #define kAnalyseEventHome                   @"Home"
 /// 点击购买人次
@@ -78,7 +80,7 @@ static NSString *const API_ANALYSE_RECORD     = @"Analyse.record";
 #endif
     // 获取本地保存的记录
     NSData *deviceData = keychainDefaultSharedObjectForKey(kAppInstallDeviceInfo);
-    NSInteger *activeCount = 1;
+    NSInteger activeCount = 1;
     if (deviceData) {
         NSDictionary *deviceInfo = [NSJSONSerialization JSONObjectWithData:deviceData options:NSJSONReadingMutableLeaves error:nil];
         if ([deviceInfo[@"deviceUUID"] isEqualToString:deviceUUID] && [deviceInfo[@"deviceIDFA"] isEqualToString:deviceIDFA]) {
@@ -108,7 +110,6 @@ static NSString *const API_ANALYSE_RECORD     = @"Analyse.record";
     if ([self checkLastLaunchTime]) {
         [self appLaunchNetworking];
     }
-    
 }
 
 
@@ -128,6 +129,7 @@ static NSString *const API_ANALYSE_RECORD     = @"Analyse.record";
             break;
         case MJAnalyseEventPaymentSucceed: {
             [self recordNetworkingWith:kAnalyseEventPaymentSucceed recordValue:recordValue];
+            [self recordNetworkingWith:kAnalyseEventUVPaid recordValue:recordValue];
         }
             break;
         case MJAnalyseEventPaymentSucceedTrial: {
@@ -150,6 +152,10 @@ static NSString *const API_ANALYSE_RECORD     = @"Analyse.record";
     }
 }
 
++ (void)recordAnalyseWithStr:(NSString *)eventStr
+                       value:(NSString *)value {
+    [self recordNetworkingWith:eventStr recordValue:value];
+}
 
 #pragma mark- Private
 

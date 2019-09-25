@@ -62,6 +62,8 @@ typedef enum : NSUInteger {
 
 /// 自己服务器的事件记录
 + (void)logEven:(MJAnalyseEventCode)eventCode value:(NSString *)value;
+/// 给宏定义triggerEventStr使用的方法
++ (void)logEvenStr:(NSString *)eventStr value:(NSString *)value;
 
 /// 记录内购相关的统计
 + (void)analysePurchaseWithStatus:(MJAnalyseStatus)status
